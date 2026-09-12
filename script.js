@@ -2,9 +2,7 @@ let personajes =
     JSON.parse(localStorage.getItem("personajes")) || [];
 
 let modoCombate = false;
-
 let turnoActual = 0;
-
 let modoOrden = "preparacion";
 
 let rondaActual =
@@ -98,184 +96,7 @@ function iniciativaSeleccionada(p) {
 
 
 /* ==================================================
-   CAMBIAR INICIATIVA
-================================================== */
-
-function cambiarIniciativa(
-    indicePersonaje,
-    indiceIniciativa
-) {
-
-    const p =
-        personajes[indicePersonaje];
-
-    if (!p) {
-        return;
-    }
-
-    p.iniciativaSeleccionada =
-        Number(indiceIniciativa) || 0;
-
-    p.total =
-        iniciativaSeleccionada(p) +
-        (Number(p.dado) || 0);
-
-    save();
-
-    render();
-}
-
-
-
-/* ==================================================
-   CAMBIAR DADO
-================================================== */
-
-function cambiarDado(
-    indicePersonaje,
-    valor
-) {
-
-    const p =
-        personajes[indicePersonaje];
-
-    if (!p) {
-        return;
-    }
-
-    const dado =
-        parseInt(valor);
-
-    p.dado =
-        Number.isNaN(dado)
-            ? 0
-            : dado;
-
-    p.total =
-        iniciativaSeleccionada(p) +
-        p.dado;
-
-    save();
-
-    actualizarTotalesVisuales();
-}
-
-
-
-/* ==================================================
-   ACTUALIZAR TOTALES
-================================================== */
-
-function actualizarTotalesVisuales() {
-
-    personajes.forEach(
-        (p, i) => {
-
-            const elemento =
-                document.getElementById(
-                    `total-${i}`
-                );
-
-            if (elemento) {
-
-                elemento.textContent =
-                    `Total: ${p.total}`;
-            }
-        }
-    );
-}
-
-
-
-/* ==================================================
-   SIGUIENTE INPUT DE DADO
-================================================== */
-
-function siguienteInput(actualId) {
-
-    const inputs =
-        Array.from(
-            document.querySelectorAll(
-                "#lista input[type='number']"
-            )
-        );
-
-    const index =
-        inputs.findIndex(
-            input => input.id === actualId
-        );
-
-    if (index === -1) {
-        return;
-    }
-
-    const current =
-        inputs[index];
-
-    const next =
-        inputs[index + 1];
-
-
-    /*
-       Guardamos el valor actual.
-       Si está vacío, se considera 0.
-    */
-
-    if (current) {
-
-        const valor =
-            parseInt(current.value);
-
-        current.value =
-            Number.isNaN(valor)
-                ? 0
-                : valor;
-    }
-
-
-    /*
-       Pasamos al siguiente personaje.
-       MUY IMPORTANTE:
-       dejamos el campo completamente vacío
-       antes de darle el foco.
-    */
-
-    if (next) {
-
-        next.value = "";
-
-        /*
-           Un pequeño retraso hace que funcione
-           correctamente también en móviles.
-        */
-
-        setTimeout(() => {
-
-            next.focus();
-
-        }, 50);
-
-    } else {
-
-        /*
-           Si era el último personaje,
-           cerramos el teclado.
-        */
-
-        if (
-            document.activeElement &&
-            typeof document.activeElement.blur === "function"
-        ) {
-
-            document.activeElement.blur();
-        }
-    }
-}
-
-
-
-/* ==================================================
-   ORDEN PREPARACIÓN
+   ORDEN DE PREPARACIÓN
 ================================================== */
 
 function ordenarPreparacion(lista) {
@@ -284,21 +105,31 @@ function ordenarPreparacion(lista) {
         (a, b) => {
 
             const A =
-                a.nombre
+                String(a.nombre || "")
                     .trim()
                     .toUpperCase();
 
             const B =
-                b.nombre
+                String(b.nombre || "")
                     .trim()
                     .toUpperCase();
 
 
             function rango(nombre) {
 
+                /*
+                   Los nombres que contienen números
+                   van siempre primero.
+                */
+
                 if (/\d/.test(nombre)) {
                     return 0;
                 }
+
+
+                /*
+                   Orden fijo de protagonistas.
+                */
 
                 if (nombre === "PLATA") {
                     return 1;
@@ -320,15 +151,17 @@ function ordenarPreparacion(lista) {
                     return 5;
                 }
 
+
+                /*
+                   Resto de personajes.
+                */
+
                 return 6;
             }
 
 
-            const rangoA =
-                rango(A);
-
-            const rangoB =
-                rango(B);
+            const rangoA = rango(A);
+            const rangoB = rango(B);
 
 
             if (rangoA !== rangoB) {
@@ -347,7 +180,7 @@ function ordenarPreparacion(lista) {
 
 
 /* ==================================================
-   ORDEN COMBATE
+   ORDEN DE COMBATE
 ================================================== */
 
 function ordenarCombate(lista) {
@@ -362,7 +195,233 @@ function ordenarCombate(lista) {
 
 
 /* ==================================================
-   RENDER PRINCIPAL
+   CAMBIAR INICIATIVA
+================================================== */
+
+function cambiarIniciativa(
+    nombrePersonaje,
+    indiceIniciativa
+) {
+
+    const p =
+        personajes.find(
+            personaje =>
+                personaje.nombre === nombrePersonaje
+        );
+
+    if (!p) {
+        return;
+    }
+
+
+    p.iniciativaSeleccionada =
+        Number(indiceIniciativa) || 0;
+
+
+    p.total =
+        iniciativaSeleccionada(p) +
+        (Number(p.dado) || 0);
+
+
+    save();
+
+    render();
+}
+
+
+
+/* ==================================================
+   CAMBIAR DADO
+================================================== */
+
+function cambiarDado(
+    nombrePersonaje,
+    valor
+) {
+
+    const p =
+        personajes.find(
+            personaje =>
+                personaje.nombre === nombrePersonaje
+        );
+
+    if (!p) {
+        return;
+    }
+
+
+    const dado =
+        parseInt(valor);
+
+
+    p.dado =
+        Number.isNaN(dado)
+            ? 0
+            : dado;
+
+
+    p.total =
+        iniciativaSeleccionada(p) +
+        p.dado;
+
+
+    save();
+
+    actualizarTotalesVisuales();
+}
+
+
+
+/* ==================================================
+   ACTUALIZAR TOTALES
+================================================== */
+
+function actualizarTotalesVisuales() {
+
+    personajes.forEach(
+        p => {
+
+            const elemento =
+                document.getElementById(
+                    `total-${encodeURIComponent(p.nombre)}`
+                );
+
+
+            if (elemento) {
+
+                elemento.textContent =
+                    `Total: ${p.total}`;
+            }
+        }
+    );
+}
+
+
+
+/* ==================================================
+   SIGUIENTE INPUT
+================================================== */
+
+function siguienteInput(actualId) {
+
+    /*
+       IMPORTANTE:
+       Aquí SIEMPRE usamos el orden de preparación
+       cuando todavía no estamos en combate.
+    */
+
+    const ordenPreparacion =
+        ordenarPreparacion(personajes);
+
+
+    const ids =
+        ordenPreparacion.map(
+            p =>
+                `dado-${encodeURIComponent(p.nombre)}`
+        );
+
+
+    const index =
+        ids.indexOf(actualId);
+
+
+    if (index === -1) {
+        return;
+    }
+
+
+    const siguiente =
+        ids[index + 1];
+
+
+    /*
+       Guardamos el valor actual.
+    */
+
+    const actual =
+        document.getElementById(actualId);
+
+
+    if (actual) {
+
+        const valor =
+            parseInt(actual.value);
+
+        const personaje =
+            ordenPreparacion[index];
+
+
+        if (personaje) {
+
+            personaje.dado =
+                Number.isNaN(valor)
+                    ? 0
+                    : valor;
+
+
+            personaje.total =
+                iniciativaSeleccionada(personaje) +
+                personaje.dado;
+        }
+    }
+
+
+    /*
+       Pasamos al siguiente personaje.
+    */
+
+    if (siguiente) {
+
+        const siguienteInputElement =
+            document.getElementById(siguiente);
+
+
+        if (siguienteInputElement) {
+
+            /*
+               Vaciamos el campo.
+               Así no aparece el 0 al escribir.
+            */
+
+            siguienteInputElement.value = "";
+
+
+            setTimeout(
+                () => {
+
+                    siguienteInputElement.focus();
+
+                },
+                50
+            );
+        }
+
+    } else {
+
+        /*
+           Era el último personaje de preparación.
+           Cerramos teclado.
+        */
+
+        if (
+            document.activeElement &&
+            typeof document.activeElement.blur === "function"
+        ) {
+
+            document.activeElement.blur();
+        }
+    }
+
+
+    save();
+
+    actualizarTotalesVisuales();
+}
+
+
+
+/* ==================================================
+   RENDER
 ================================================== */
 
 function render() {
@@ -370,16 +429,24 @@ function render() {
     const lista =
         document.getElementById("lista");
 
+
     if (!lista) {
         return;
     }
 
+
     lista.innerHTML = "";
 
 
+    /*
+       Durante preparación usamos SIEMPRE
+       el orden de preparación.
+    */
+
     let ordenados;
 
-    if (modoOrden === "combate") {
+
+    if (modoCombate) {
 
         ordenados =
             ordenarCombate(personajes);
@@ -391,9 +458,10 @@ function render() {
     }
 
 
-    /* ==============================================
-       CALCULAR ADVERTENCIAS
-    ============================================== */
+    /*
+       Calculamos advertencias sobre el orden
+       que se está mostrando.
+    */
 
     ordenados.forEach(
         p => {
@@ -431,13 +499,20 @@ function render() {
     }
 
 
+    /*
+       En preparación guardamos el array en el orden
+       de preparación.
+       
+       En combate guardamos el orden de combate.
+    */
+
     personajes =
         ordenados;
 
 
-    /* ==============================================
+    /* ==================================================
        CREAR TARJETAS
-    ============================================== */
+    ================================================== */
 
     personajes.forEach(
         (p, i) => {
@@ -457,7 +532,9 @@ function render() {
                 "#ff9800";
 
 
-            /* ALIADO */
+            /*
+               ALIADO
+            */
 
             if (
                 nombreRaw
@@ -468,6 +545,7 @@ function render() {
                 color =
                     "#2e7d32";
 
+
                 nombreRaw =
                     nombreRaw.replace(
                         /^ALIADO\s+/i,
@@ -476,7 +554,9 @@ function render() {
             }
 
 
-            /* PROTAGONISTAS */
+            /*
+               PROTAGONISTAS
+            */
 
             else if (
                 protagonistas.includes(
@@ -489,9 +569,19 @@ function render() {
             }
 
 
-            /* ======================================
-               ADVERTENCIA
-            ====================================== */
+            /*
+               ID único basado en el nombre original.
+            */
+
+            const idSeguro =
+                encodeURIComponent(
+                    p.nombre
+                );
+
+
+            /*
+               ADVERTENCIAS
+            */
 
             const warningText =
                 p.warning &&
@@ -502,9 +592,9 @@ function render() {
                     : "";
 
 
-            /* ======================================
+            /*
                INICIATIVAS
-            ====================================== */
+            */
 
             const iniciativas =
                 obtenerIniciativas(p);
@@ -521,6 +611,7 @@ function render() {
                 indiceActivo < 0 ||
                 indiceActivo >= iniciativas.length
             ) {
+
                 indiceActivo = 0;
             }
 
@@ -543,20 +634,28 @@ function render() {
                                         65 + indice
                                     );
 
+
                                 const seleccionada =
                                     indice === indiceActivo
                                         ? "seleccionada"
                                         : "";
+
 
                                 return `
 
                                     <button
                                         type="button"
                                         class="boton-iniciativa ${seleccionada}"
-                                        onclick="cambiarIniciativa(${i}, ${indice})"
+                                        onclick="cambiarIniciativa('${p.nombre.replace(/'/g, "\\'")}', ${indice})"
                                     >
-                                        <strong>${letra}</strong>
-                                        <span>${valor}</span>
+                                        <strong>
+                                            ${letra}
+                                        </strong>
+
+                                        <span>
+                                            ${valor}
+                                        </span>
+
                                     </button>
 
                                 `;
@@ -572,19 +671,34 @@ function render() {
                 iniciativasHTML = `
 
                     <div class="iniciativa-unica">
+
                         Iniciativa:
+
                         <strong>
                             ${iniciativas[0]}
                         </strong>
+
                     </div>
 
                 `;
             }
 
 
-            /* ======================================
+            /*
+               VALOR DEL DADO
+
+               Si es 0, mostramos el campo vacío.
+            */
+
+            const valorDado =
+                Number(p.dado) === 0
+                    ? ""
+                    : p.dado;
+
+
+            /*
                TARJETA
-            ====================================== */
+            */
 
             lista.innerHTML += `
 
@@ -607,15 +721,19 @@ function render() {
                             🎲 Dado:
                         </span>
 
+
                         <input
                             type="number"
-                            id="dado-${i}"
-                            value="${
-                                Number(p.dado) === 0
-                                    ? ""
-                                    : p.dado
-                            }"
-                            oninput="cambiarDado(${i}, this.value)"
+                            id="dado-${idSeguro}"
+                            value="${valorDado}"
+
+                            oninput="
+                                cambiarDado(
+                                    '${p.nombre.replace(/'/g, "\\'")}',
+                                    this.value
+                                )
+                            "
+
                             onkeydown="
                                 if(event.key === 'Enter'){
                                     event.preventDefault();
@@ -629,8 +747,11 @@ function render() {
 
                     <div class="total-linea">
 
-                        <div id="total-${i}">
-                            Total: ${
+                        <div
+                            id="total-${idSeguro}"
+                        >
+                            Total:
+                            ${
                                 Number.isFinite(
                                     Number(p.total)
                                 )
@@ -645,9 +766,11 @@ function render() {
                             p.warning.length > 0
 
                                 ? `
+
                                     <div class="warning">
                                         ${warningText}
                                     </div>
+
                                   `
 
                                 : ""
@@ -659,7 +782,11 @@ function render() {
                     <button
                         type="button"
                         class="delete"
-                        onclick="borrar(${i})"
+                        onclick="
+                            borrar(
+                                '${p.nombre.replace(/'/g, "\\'")}'
+                            )
+                        "
                     >
                         🗑️
                     </button>
@@ -693,6 +820,7 @@ function actualizarBotones() {
             ".combat.iniciar"
         );
 
+
     if (!btn) {
         return;
     }
@@ -703,6 +831,7 @@ function actualizarBotones() {
         btn.textContent =
             "Finalizar combate";
 
+
         btn.classList.add(
             "activo"
         );
@@ -711,6 +840,7 @@ function actualizarBotones() {
 
         btn.textContent =
             "▶ Iniciar combate";
+
 
         btn.classList.remove(
             "activo"
@@ -731,9 +861,11 @@ function actualizarRonda() {
             "rondaActual"
         );
 
+
     if (!elemento) {
         return;
     }
+
 
     elemento.textContent =
         `⚔ Ronda ${rondaActual}`;
@@ -748,7 +880,10 @@ function actualizarRonda() {
 function addPersonaje() {
 
     const nombreInput =
-        document.getElementById("nombre");
+        document.getElementById(
+            "nombre"
+        );
+
 
     if (!nombreInput) {
         return;
@@ -786,12 +921,15 @@ function addPersonaje() {
             const input =
                 document.getElementById(id);
 
+
             if (!input) {
                 return;
             }
 
+
             const valor =
                 parseInt(input.value);
+
 
             if (!Number.isNaN(valor)) {
 
@@ -807,7 +945,7 @@ function addPersonaje() {
     }
 
 
-    const nuevoPersonaje = {
+    personajes.push({
 
         nombre: nombre,
 
@@ -821,15 +959,12 @@ function addPersonaje() {
 
         total: valores[0]
 
-    };
+    });
 
 
-    personajes.push(
-        nuevoPersonaje
-    );
-
-
-    /* Limpiar formulario */
+    /*
+       Limpiar formulario.
+    */
 
     nombreInput.value = "";
 
@@ -840,11 +975,23 @@ function addPersonaje() {
             const input =
                 document.getElementById(id);
 
+
             if (input) {
+
                 input.value = "";
             }
         }
     );
+
+
+    /*
+       Al añadir seguimos estando
+       en preparación.
+    */
+
+    modoCombate = false;
+
+    modoOrden = "preparacion";
 
 
     save();
@@ -858,21 +1005,25 @@ function addPersonaje() {
 
 
 /* ==================================================
-   BORRAR PERSONAJE
+   BORRAR
 ================================================== */
 
-function borrar(i) {
+function borrar(nombre) {
 
-    if (
-        i < 0 ||
-        i >= personajes.length
-    ) {
+    const indice =
+        personajes.findIndex(
+            p =>
+                p.nombre === nombre
+        );
+
+
+    if (indice === -1) {
         return;
     }
 
 
     personajes.splice(
-        i,
+        indice,
         1
     );
 
@@ -905,12 +1056,21 @@ function borrar(i) {
 
 function ordenar() {
 
-    personajes.forEach(
-        (p, i) => {
+    /*
+       Primero recogemos los dados
+       respetando el orden de preparación.
+    */
+
+    const preparacion =
+        ordenarPreparacion(personajes);
+
+
+    preparacion.forEach(
+        p => {
 
             const input =
                 document.getElementById(
-                    `dado-${i}`
+                    `dado-${encodeURIComponent(p.nombre)}`
                 );
 
 
@@ -918,6 +1078,7 @@ function ordenar() {
 
                 const valor =
                     parseInt(input.value);
+
 
                 p.dado =
                     Number.isNaN(valor)
@@ -931,6 +1092,16 @@ function ordenar() {
                 (Number(p.dado) || 0);
         }
     );
+
+
+    /*
+       Ahora sí cambiamos al orden de combate.
+    */
+
+    personajes =
+        ordenarCombate(
+            preparacion
+        );
 
 
     modoOrden =
@@ -960,18 +1131,29 @@ function iniciarCombate() {
     }
 
 
-    /* ==============================================
+    /*
+       =============================================
        INICIAR COMBATE
-    ============================================== */
+       =============================================
+    */
 
     if (!modoCombate) {
 
-        personajes.forEach(
-            (p, i) => {
+        /*
+           Recogemos los dados siguiendo
+           el orden de preparación.
+        */
+
+        const preparacion =
+            ordenarPreparacion(personajes);
+
+
+        preparacion.forEach(
+            p => {
 
                 const input =
                     document.getElementById(
-                        `dado-${i}`
+                        `dado-${encodeURIComponent(p.nombre)}`
                     );
 
 
@@ -979,6 +1161,7 @@ function iniciarCombate() {
 
                     const valor =
                         parseInt(input.value);
+
 
                     p.dado =
                         Number.isNaN(valor)
@@ -994,9 +1177,14 @@ function iniciarCombate() {
         );
 
 
+        /*
+           Una vez introducidos todos los dados,
+           comienza el combate y se ordena por total.
+        */
+
         personajes =
             ordenarCombate(
-                personajes
+                preparacion
             );
 
 
@@ -1019,9 +1207,12 @@ function iniciarCombate() {
     }
 
 
-    /* ==============================================
-       FINALIZAR RONDA ACTUAL
-    ============================================== */
+
+    /*
+       =============================================
+       FINALIZAR RONDA
+       =============================================
+    */
 
     const resultados =
         personajes.map(
@@ -1032,7 +1223,6 @@ function iniciarCombate() {
 
                 total:
                     Number(p.total) || 0
-
             })
         );
 
@@ -1044,12 +1234,20 @@ function iniciarCombate() {
 
         resultados:
             resultados
-
     });
 
 
+    /*
+       Siguiente ronda.
+    */
+
     rondaActual++;
 
+
+    /*
+       Resetear dados manteniendo
+       la iniciativa seleccionada.
+    */
 
     personajes.forEach(
         p => {
@@ -1133,6 +1331,10 @@ function nuevoCombate() {
 
             p.dado = 0;
 
+            /*
+               Volvemos a la iniciativa A.
+            */
+
             p.iniciativaSeleccionada = 0;
 
             p.total =
@@ -1141,6 +1343,18 @@ function nuevoCombate() {
             p.warning = [];
         }
     );
+
+
+    /*
+       Al volver a preparación,
+       se recupera automáticamente
+       el orden de preparación.
+    */
+
+    personajes =
+        ordenarPreparacion(
+            personajes
+        );
 
 
     save();
@@ -1185,6 +1399,10 @@ function renderHistorico() {
 
     contenedor.innerHTML = "";
 
+
+    /*
+       Ronda más reciente primero.
+    */
 
     [...historico]
         .reverse()
