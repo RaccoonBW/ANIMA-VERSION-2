@@ -1,845 +1,917 @@
-let personajes = JSON.parse(localStorage.getItem("personajes")) || [];
+let personajes =
+    JSON.parse(localStorage.getItem("personajes")) || [];
 
 let modoCombate = false;
+
 let turnoActual = 0;
 
 let modoOrden = "preparacion";
 
 let rondaActual =
-parseInt(localStorage.getItem("rondaActual")) || 1;
+    parseInt(localStorage.getItem("rondaActual")) || 1;
 
 let historico =
-JSON.parse(localStorage.getItem("historicoCombate")) || [];
+    JSON.parse(
+        localStorage.getItem("historicoCombate")
+    ) || [];
+
 
 const protagonistas = [
-"PLATA",
-"MARAVI",
-"TAKESHI",
-"MARTINA",
-"IMME"
+    "PLATA",
+    "MARAVI",
+    "MARTINA",
+    "TAKESHI",
+    "IMME"
 ];
 
-/* =========================
-GUARDAR
-========================= */
-
-function save(){
-
-```
-localStorage.setItem(
-    "personajes",
-    JSON.stringify(personajes)
-);
-
-localStorage.setItem(
-    "rondaActual",
-    rondaActual
-);
-
-localStorage.setItem(
-    "historicoCombate",
-    JSON.stringify(historico)
-);
-```
-
-}
-
-/* =========================
-INICIATIVAS
-========================= */
-
-function obtenerIniciativas(p){
-
-```
-if(
-    Array.isArray(p.iniciativas) &&
-    p.iniciativas.length > 0
-){
-    return p.iniciativas;
-}
-
-return [p.ini ?? 0];
-```
-
-}
-
-function iniciativaSeleccionada(p){
-
-```
-const iniciativas =
-    obtenerIniciativas(p);
-
-let indice =
-    parseInt(p.iniciativaSeleccionada);
 
 
-if(
-    isNaN(indice) ||
-    indice < 0 ||
-    indice >= iniciativas.length
-){
+/* ==================================================
+   GUARDAR
+================================================== */
 
-    indice = 0;
-}
+function save() {
 
-
-return iniciativas[indice];
-```
-
-}
-
-/* =========================
-CAMBIAR INICIATIVA
-========================= */
-
-function cambiarIniciativa(
-indicePersonaje,
-indiceIniciativa
-){
-
-```
-const p =
-    personajes[indicePersonaje];
-
-
-p.iniciativaSeleccionada =
-    parseInt(indiceIniciativa) || 0;
-
-
-p.total =
-    iniciativaSeleccionada(p) +
-    (p.dado || 0);
-
-
-save();
-
-render();
-```
-
-}
-
-/* =========================
-CAMBIAR DADO
-========================= */
-
-function cambiarDado(
-indicePersonaje,
-valor
-){
-
-```
-const p =
-    personajes[indicePersonaje];
-
-
-const dado =
-    parseInt(valor) || 0;
-
-
-p.dado = dado;
-
-
-p.total =
-    iniciativaSeleccionada(p) +
-    dado;
-
-
-save();
-
-actualizarTotalesVisuales();
-```
-
-}
-
-function actualizarTotalesVisuales(){
-
-```
-personajes.forEach((p, i) => {
-
-    const totalElement =
-        document.getElementById(
-            `total-${i}`
-        );
-
-
-    if(totalElement){
-
-        totalElement.textContent =
-            `Total: ${p.total}`;
-    }
-
-});
-```
-
-}
-
-/* =========================
-SIGUIENTE INPUT
-========================= */
-
-function siguienteInput(actualId){
-
-```
-const inputs =
-    Array.from(
-        document.querySelectorAll(
-            "#lista input[type='number']"
-        )
+    localStorage.setItem(
+        "personajes",
+        JSON.stringify(personajes)
     );
 
-
-const index =
-    inputs.findIndex(
-        i => i.id === actualId
+    localStorage.setItem(
+        "rondaActual",
+        String(rondaActual)
     );
 
-
-const current =
-    inputs[index];
-
-const next =
-    inputs[index + 1];
-
-
-if(current){
-
-    current.value =
-        parseInt(current.value) || 0;
+    localStorage.setItem(
+        "historicoCombate",
+        JSON.stringify(historico)
+    );
 }
 
 
-if(next){
 
-    next.value = 0;
+/* ==================================================
+   OBTENER INICIATIVAS
+================================================== */
 
-    next.focus();
+function obtenerIniciativas(p) {
 
-    next.select();
-
-}else{
-
-    document.activeElement.blur();
-}
-```
-
-}
-
-/* =========================
-ORDEN PREPARACIÓN
-========================= */
-
-function ordenarPreparacion(lista){
-
-```
-return [...lista].sort((a,b) => {
-
-    const A =
-        a.nombre
-            .trim()
-            .toUpperCase();
-
-
-    const B =
-        b.nombre
-            .trim()
-            .toUpperCase();
-
-
-    const rank = (name) => {
-
-        if(/\d/.test(name)) return 0;
-
-        if(name === "PLATA") return 1;
-
-        if(name === "MARAVI") return 2;
-
-        if(name === "MARTINA") return 3;
-
-        if(name === "TAKESHI") return 4;
-
-        if(name === "IMME") return 5;
-
-        return 6;
-    };
-
-
-    const rA = rank(A);
-
-    const rB = rank(B);
-
-
-    if(rA === rB){
-
-        return A.localeCompare(
-            B,
-            "es"
-        );
+    if (
+        Array.isArray(p.iniciativas) &&
+        p.iniciativas.length > 0
+    ) {
+        return p.iniciativas;
     }
 
-
-    return rA - rB;
-});
-```
-
-}
-
-/* =========================
-ORDEN COMBATE
-========================= */
-
-function ordenarCombate(lista){
-
-```
-return [...lista].sort(
-    (a,b) => b.total - a.total
-);
-```
-
-}
-
-/* =========================
-RENDER
-========================= */
-
-function render(){
-
-```
-const lista =
-    document.getElementById("lista");
-
-
-lista.innerHTML = "";
-
-
-const ordenados =
-    modoOrden === "combate"
-
-        ? ordenarCombate(personajes)
-
-        : ordenarPreparacion(personajes);
-
-
-ordenados.forEach(
-    p => p.warning = []
-);
-
-
-for(
-    let j = 0;
-    j < ordenados.length;
-    j++
-){
-
-    for(
-        let i = 0;
-        i < j;
-        i++
-    ){
-
-        const gap =
-            ordenados[i].total -
-            ordenados[j].total;
-
-
-        if(gap >= 150){
-
-            ordenados[j]
-                .warning
-                .push(
-                    ordenados[i].nombre
-                );
-        }
+    if (typeof p.ini !== "undefined") {
+        return [Number(p.ini) || 0];
     }
+
+    return [0];
 }
 
 
-personajes = ordenados;
 
+/* ==================================================
+   INICIATIVA SELECCIONADA
+================================================== */
 
-personajes.forEach((p, i) => {
-
-    const activo =
-        modoCombate &&
-        i === turnoActual
-
-            ? "🔴"
-
-            : "";
-
-
-    let nombreRaw =
-        p.nombre.trim();
-
-
-    let color =
-        "#ff9800";
-
-
-    if(
-        nombreRaw
-            .toUpperCase()
-            .startsWith("ALIADO ")
-    ){
-
-        color =
-            "#2e7d32";
-
-
-        nombreRaw =
-            nombreRaw.replace(
-                /^[Aa]liado\s+/,
-                ""
-            );
-    }
-
-    else if(
-        protagonistas.includes(
-            nombreRaw.toUpperCase()
-        )
-    ){
-
-        color =
-            "#ffffff";
-    }
-
-
-    const warningText =
-        p.warning.length > 0
-
-            ? `⚠ ${p.warning.join(", ")}`
-
-            : "";
-
+function iniciativaSeleccionada(p) {
 
     const iniciativas =
         obtenerIniciativas(p);
 
+    let indice =
+        Number(p.iniciativaSeleccionada);
 
-    const indiceActivo =
-        p.iniciativaSeleccionada || 0;
-
-
-    /*
-     * BOTONES A / B / C / D
-     */
-
-    let iniciativasHTML = "";
-
-
-    if(iniciativas.length > 1){
-
-        iniciativasHTML = `
-
-            <div class="selector-iniciativas">
-
-                ${iniciativas.map(
-                    (valor, indice) => {
-
-                        const letra =
-                            String.fromCharCode(
-                                65 + indice
-                            );
-
-
-                        const activoClase =
-                            indice === indiceActivo
-                                ? "seleccionada"
-                                : "";
-
-
-                        return `
-
-                            <button
-                                class="boton-iniciativa ${activoClase}"
-                                onclick="
-                                    cambiarIniciativa(
-                                        ${i},
-                                        ${indice}
-                                    )
-                                "
-                            >
-
-                                <strong>
-                                    ${letra}
-                                </strong>
-
-                                <span>
-                                    ${valor}
-                                </span>
-
-                            </button>
-
-                        `;
-
-                    }
-                ).join("")}
-
-            </div>
-
-        `;
-
-    }else{
-
-        iniciativasHTML = `
-
-            <div class="iniciativa-unica">
-
-                Iniciativa:
-                <strong>
-                    ${iniciativas[0]}
-                </strong>
-
-            </div>
-
-        `;
+    if (
+        !Number.isInteger(indice) ||
+        indice < 0 ||
+        indice >= iniciativas.length
+    ) {
+        indice = 0;
     }
 
-
-    lista.innerHTML += `
-
-        <div class="card">
-
-            <b
-                class="nombre-personaje"
-                style="color:${color}"
-            >
-
-                ${activo}
-                ${nombreRaw}
-
-            </b>
-
-
-            ${iniciativasHTML}
-
-
-            <div class="dado-linea">
-
-                <span>
-                    🎲 Dado:
-                </span>
-
-
-                <input
-                    type="number"
-                    id="dado-${i}"
-                    value="${p.dado ?? 0}"
-                    oninput="
-                        cambiarDado(
-                            ${i},
-                            this.value
-                        )
-                    "
-                    onkeydown="
-                        if(event.key==='Enter'){
-                            event.preventDefault();
-                            siguienteInput(this.id);
-                        }
-                    "
-                >
-
-            </div>
-
-
-            <div class="total-linea">
-
-                <div id="total-${i}">
-                    Total:
-                    ${p.total ??
-                    iniciativaSeleccionada(p)}
-                </div>
-
-
-                ${
-                    p.warning.length > 0
-
-                    ? `
-
-                        <div class="warning">
-                            ${warningText}
-                        </div>
-
-                      `
-
-                    : ""
-                }
-
-            </div>
-
-
-            <button
-                class="delete"
-                onclick="borrar(${i})"
-            >
-                🗑️
-            </button>
-
-        </div>
-
-    `;
-});
-
-
-actualizarBotones();
-
-actualizarRonda();
-
-renderHistorico();
-```
-
-}
-
-/* =========================
-BOTONES
-========================= */
-
-function actualizarBotones(){
-
-```
-const btn =
-    document.querySelector(
-        ".combat.iniciar"
-    );
-
-
-btn.textContent =
-    modoCombate
-
-        ? "Finalizar combate"
-
-        : "Iniciar combate";
-
-
-if(modoCombate){
-
-    btn.classList.add("activo");
-
-}else{
-
-    btn.classList.remove("activo");
-}
-```
-
-}
-
-function actualizarRonda(){
-
-```
-document.getElementById(
-    "rondaActual"
-).textContent =
-    `⚔ Ronda ${rondaActual}`;
-```
-
-}
-
-/* =========================
-AÑADIR PERSONAJE
-========================= */
-
-function addPersonaje(){
-
-```
-const nombre =
-    document
-        .getElementById("nombre")
-        .value
-        .trim();
-
-
-if(!nombre) return;
-
-
-const valores = [
-
-    parseInt(
-        document.getElementById("ini1").value
-    ),
-
-    parseInt(
-        document.getElementById("ini2").value
-    ),
-
-    parseInt(
-        document.getElementById("ini3").value
-    ),
-
-    parseInt(
-        document.getElementById("ini4").value
-    )
-
-].filter(
-    valor => !isNaN(valor)
-);
-
-
-if(valores.length === 0){
-
-    valores.push(0);
+    return Number(iniciativas[indice]) || 0;
 }
 
 
-personajes.push({
 
-    nombre,
+/* ==================================================
+   CAMBIAR INICIATIVA
+================================================== */
 
-    ini: valores[0],
+function cambiarIniciativa(
+    indicePersonaje,
+    indiceIniciativa
+) {
 
-    iniciativas: valores,
+    const p =
+        personajes[indicePersonaje];
 
-    iniciativaSeleccionada: 0,
+    if (!p) {
+        return;
+    }
 
-    dado: 0,
+    p.iniciativaSeleccionada =
+        Number(indiceIniciativa) || 0;
 
-    total: valores[0]
+    p.total =
+        iniciativaSeleccionada(p) +
+        (Number(p.dado) || 0);
 
-});
+    save();
 
-
-document.getElementById(
-    "nombre"
-).value = "";
-
-
-document.getElementById(
-    "ini1"
-).value = "";
-
-
-document.getElementById(
-    "ini2"
-).value = "";
-
-
-document.getElementById(
-    "ini3"
-).value = "";
-
-
-document.getElementById(
-    "ini4"
-).value = "";
-
-
-save();
-
-render();
-```
-
+    render();
 }
 
-/* =========================
-BORRAR
-========================= */
-
-function borrar(i){
-
-```
-personajes.splice(
-    i,
-    1
-);
 
 
-save();
+/* ==================================================
+   CAMBIAR DADO
+================================================== */
 
-render();
-```
+function cambiarDado(
+    indicePersonaje,
+    valor
+) {
 
-}
+    const p =
+        personajes[indicePersonaje];
 
-/* =========================
-ORDENAR
-========================= */
-
-function ordenar(){
-
-```
-personajes.forEach((p, i) => {
-
-    const input =
-        document.getElementById(
-            `dado-${i}`
-        );
-
+    if (!p) {
+        return;
+    }
 
     const dado =
-        input
-            ? parseInt(input.value)
-            : 0;
-
+        parseInt(valor);
 
     p.dado =
-        isNaN(dado)
+        Number.isNaN(dado)
             ? 0
             : dado;
-
 
     p.total =
         iniciativaSeleccionada(p) +
         p.dado;
 
-});
+    save();
 
-
-modoOrden =
-    "combate";
-
-
-render();
-```
-
-}
-
-/* =========================
-INICIAR / FINALIZAR COMBATE
-========================= */
-
-function iniciarCombate(){
-
-```
-if(personajes.length === 0){
-    return;
+    actualizarTotalesVisuales();
 }
 
 
-/*
- * INICIAR COMBATE
- */
 
-if(!modoCombate){
+/* ==================================================
+   ACTUALIZAR TOTALES SIN REDIBUJAR
+================================================== */
 
-    personajes.forEach((p, i) => {
+function actualizarTotalesVisuales() {
 
-        const input =
-            document.getElementById(
-                `dado-${i}`
+    personajes.forEach(
+        (p, i) => {
+
+            const elemento =
+                document.getElementById(
+                    `total-${i}`
+                );
+
+            if (elemento) {
+
+                elemento.textContent =
+                    `Total: ${p.total}`;
+            }
+        }
+    );
+}
+
+
+
+/* ==================================================
+   SIGUIENTE INPUT DE DADO
+================================================== */
+
+function siguienteInput(actualId) {
+
+    const inputs =
+        Array.from(
+            document.querySelectorAll(
+                "#lista input[type='number']"
+            )
+        );
+
+    const index =
+        inputs.findIndex(
+            input => input.id === actualId
+        );
+
+    if (index === -1) {
+        return;
+    }
+
+    const current =
+        inputs[index];
+
+    const next =
+        inputs[index + 1];
+
+    if (current) {
+
+        const valor =
+            parseInt(current.value);
+
+        current.value =
+            Number.isNaN(valor)
+                ? 0
+                : valor;
+    }
+
+    if (next) {
+
+        next.focus();
+
+        next.select();
+
+    } else {
+
+        if (
+            document.activeElement &&
+            typeof document.activeElement.blur === "function"
+        ) {
+            document.activeElement.blur();
+        }
+    }
+}
+
+
+
+/* ==================================================
+   ORDEN PREPARACIÓN
+================================================== */
+
+function ordenarPreparacion(lista) {
+
+    return [...lista].sort(
+        (a, b) => {
+
+            const A =
+                a.nombre
+                    .trim()
+                    .toUpperCase();
+
+            const B =
+                b.nombre
+                    .trim()
+                    .toUpperCase();
+
+
+            function rango(nombre) {
+
+                if (/\d/.test(nombre)) {
+                    return 0;
+                }
+
+                if (nombre === "PLATA") {
+                    return 1;
+                }
+
+                if (nombre === "MARAVI") {
+                    return 2;
+                }
+
+                if (nombre === "MARTINA") {
+                    return 3;
+                }
+
+                if (nombre === "TAKESHI") {
+                    return 4;
+                }
+
+                if (nombre === "IMME") {
+                    return 5;
+                }
+
+                return 6;
+            }
+
+
+            const rangoA =
+                rango(A);
+
+            const rangoB =
+                rango(B);
+
+
+            if (rangoA !== rangoB) {
+                return rangoA - rangoB;
+            }
+
+
+            return A.localeCompare(
+                B,
+                "es"
             );
+        }
+    );
+}
 
 
-        if(input){
 
-            const dado =
+/* ==================================================
+   ORDEN COMBATE
+================================================== */
+
+function ordenarCombate(lista) {
+
+    return [...lista].sort(
+        (a, b) =>
+            (Number(b.total) || 0) -
+            (Number(a.total) || 0)
+    );
+}
+
+
+
+/* ==================================================
+   RENDER PRINCIPAL
+================================================== */
+
+function render() {
+
+    const lista =
+        document.getElementById("lista");
+
+    if (!lista) {
+        return;
+    }
+
+    lista.innerHTML = "";
+
+
+    let ordenados;
+
+    if (modoOrden === "combate") {
+
+        ordenados =
+            ordenarCombate(personajes);
+
+    } else {
+
+        ordenados =
+            ordenarPreparacion(personajes);
+    }
+
+
+    /* ==============================================
+       CALCULAR ADVERTENCIAS
+    ============================================== */
+
+    ordenados.forEach(
+        p => {
+            p.warning = [];
+        }
+    );
+
+
+    for (
+        let j = 0;
+        j < ordenados.length;
+        j++
+    ) {
+
+        for (
+            let i = 0;
+            i < j;
+            i++
+        ) {
+
+            const diferencia =
+                (Number(ordenados[i].total) || 0) -
+                (Number(ordenados[j].total) || 0);
+
+
+            if (diferencia >= 150) {
+
+                ordenados[j]
+                    .warning
+                    .push(
+                        ordenados[i].nombre
+                    );
+            }
+        }
+    }
+
+
+    /*
+       El orden visual pasa a ser también
+       el orden del array.
+    */
+
+    personajes =
+        ordenados;
+
+
+    /* ==============================================
+       CREAR TARJETAS
+    ============================================== */
+
+    personajes.forEach(
+        (p, i) => {
+
+            const activo =
+                modoCombate &&
+                i === turnoActual
+                    ? "🔴 "
+                    : "";
+
+
+            let nombreRaw =
+                String(p.nombre || "").trim();
+
+
+            let color =
+                "#ff9800";
+
+
+            /* ALIADO */
+
+            if (
+                nombreRaw
+                    .toUpperCase()
+                    .startsWith("ALIADO ")
+            ) {
+
+                color =
+                    "#2e7d32";
+
+                nombreRaw =
+                    nombreRaw.replace(
+                        /^ALIADO\s+/i,
+                        ""
+                    );
+            }
+
+
+            /* PROTAGONISTAS */
+
+            else if (
+                protagonistas.includes(
+                    nombreRaw.toUpperCase()
+                )
+            ) {
+
+                color =
+                    "#ffffff";
+            }
+
+
+            /* ======================================
+               ADVERTENCIA
+            ====================================== */
+
+            const warningText =
+                p.warning &&
+                p.warning.length > 0
+
+                    ? `⚠ ${p.warning.join(", ")}`
+
+                    : "";
+
+
+            /* ======================================
+               INICIATIVAS
+            ====================================== */
+
+            const iniciativas =
+                obtenerIniciativas(p);
+
+
+            let indiceActivo =
+                Number(
+                    p.iniciativaSeleccionada
+                );
+
+
+            if (
+                !Number.isInteger(indiceActivo) ||
+                indiceActivo < 0 ||
+                indiceActivo >= iniciativas.length
+            ) {
+                indiceActivo = 0;
+            }
+
+
+            let iniciativasHTML =
+                "";
+
+
+            if (iniciativas.length > 1) {
+
+                iniciativasHTML = `
+
+                    <div class="selector-iniciativas">
+
+                        ${iniciativas.map(
+                            (valor, indice) => {
+
+                                const letra =
+                                    String.fromCharCode(
+                                        65 + indice
+                                    );
+
+                                const seleccionada =
+                                    indice === indiceActivo
+                                        ? "seleccionada"
+                                        : "";
+
+                                return `
+
+                                    <button
+                                        type="button"
+                                        class="boton-iniciativa ${seleccionada}"
+                                        onclick="cambiarIniciativa(${i}, ${indice})"
+                                    >
+                                        <strong>${letra}</strong>
+                                        <span>${valor}</span>
+                                    </button>
+
+                                `;
+                            }
+                        ).join("")}
+
+                    </div>
+
+                `;
+
+            } else {
+
+                iniciativasHTML = `
+
+                    <div class="iniciativa-unica">
+                        Iniciativa:
+                        <strong>
+                            ${iniciativas[0]}
+                        </strong>
+                    </div>
+
+                `;
+            }
+
+
+            /* ======================================
+               TARJETA
+            ====================================== */
+
+            lista.innerHTML += `
+
+                <div class="card">
+
+                    <b
+                        class="nombre-personaje"
+                        style="color:${color}"
+                    >
+                        ${activo}${nombreRaw}
+                    </b>
+
+
+                    ${iniciativasHTML}
+
+
+                    <div class="dado-linea">
+
+                        <span>
+                            🎲 Dado:
+                        </span>
+
+                        <input
+                            type="number"
+                            id="dado-${i}"
+                            value="${Number(p.dado) || 0}"
+                            oninput="cambiarDado(${i}, this.value)"
+                            onkeydown="
+                                if(event.key === 'Enter'){
+                                    event.preventDefault();
+                                    siguienteInput(this.id);
+                                }
+                            "
+                        >
+
+                    </div>
+
+
+                    <div class="total-linea">
+
+                        <div id="total-${i}">
+                            Total: ${
+                                Number.isFinite(
+                                    Number(p.total)
+                                )
+                                    ? p.total
+                                    : iniciativaSeleccionada(p)
+                            }
+                        </div>
+
+
+                        ${
+                            p.warning &&
+                            p.warning.length > 0
+
+                                ? `
+                                    <div class="warning">
+                                        ${warningText}
+                                    </div>
+                                  `
+
+                                : ""
+                        }
+
+                    </div>
+
+
+                    <button
+                        type="button"
+                        class="delete"
+                        onclick="borrar(${i})"
+                    >
+                        🗑️
+                    </button>
+
+                </div>
+
+            `;
+        }
+    );
+
+
+    actualizarBotones();
+
+    actualizarRonda();
+
+    renderHistorico();
+
+    save();
+}
+
+
+
+/* ==================================================
+   BOTONES
+================================================== */
+
+function actualizarBotones() {
+
+    const btn =
+        document.querySelector(
+            ".combat.iniciar"
+        );
+
+    if (!btn) {
+        return;
+    }
+
+
+    if (modoCombate) {
+
+        btn.textContent =
+            "Finalizar combate";
+
+        btn.classList.add(
+            "activo"
+        );
+
+    } else {
+
+        btn.textContent =
+            "▶ Iniciar combate";
+
+        btn.classList.remove(
+            "activo"
+        );
+    }
+}
+
+
+
+/* ==================================================
+   RONDA
+================================================== */
+
+function actualizarRonda() {
+
+    const elemento =
+        document.getElementById(
+            "rondaActual"
+        );
+
+    if (!elemento) {
+        return;
+    }
+
+    elemento.textContent =
+        `⚔ Ronda ${rondaActual}`;
+}
+
+
+
+/* ==================================================
+   AÑADIR PERSONAJE
+================================================== */
+
+function addPersonaje() {
+
+    const nombreInput =
+        document.getElementById("nombre");
+
+    if (!nombreInput) {
+        return;
+    }
+
+
+    const nombre =
+        nombreInput.value.trim();
+
+
+    if (!nombre) {
+
+        nombreInput.focus();
+
+        return;
+    }
+
+
+    const campos =
+        [
+            "ini1",
+            "ini2",
+            "ini3",
+            "ini4"
+        ];
+
+
+    const valores =
+        [];
+
+
+    campos.forEach(
+        id => {
+
+            const input =
+                document.getElementById(id);
+
+            if (!input) {
+                return;
+            }
+
+            const valor =
                 parseInt(input.value);
 
+            if (!Number.isNaN(valor)) {
 
-            p.dado =
-                isNaN(dado)
-                    ? 0
-                    : dado;
+                valores.push(valor);
+            }
+        }
+    );
+
+
+    /*
+       Si no se introduce ninguna iniciativa,
+       se utiliza 0.
+    */
+
+    if (valores.length === 0) {
+
+        valores.push(0);
+    }
+
+
+    const nuevoPersonaje = {
+
+        nombre: nombre,
+
+        ini: valores[0],
+
+        iniciativas: valores,
+
+        iniciativaSeleccionada: 0,
+
+        dado: 0,
+
+        total: valores[0]
+
+    };
+
+
+    personajes.push(
+        nuevoPersonaje
+    );
+
+
+    /* Limpiar formulario */
+
+    nombreInput.value = "";
+
+
+    campos.forEach(
+        id => {
+
+            const input =
+                document.getElementById(id);
+
+            if (input) {
+                input.value = "";
+            }
+        }
+    );
+
+
+    save();
+
+    render();
+
+
+    /*
+       Volver al campo nombre
+       para poder añadir rápidamente otro.
+    */
+
+    nombreInput.focus();
+}
+
+
+
+/* ==================================================
+   BORRAR PERSONAJE
+================================================== */
+
+function borrar(i) {
+
+    if (
+        i < 0 ||
+        i >= personajes.length
+    ) {
+        return;
+    }
+
+
+    personajes.splice(
+        i,
+        1
+    );
+
+
+    if (
+        personajes.length === 0
+    ) {
+
+        turnoActual = 0;
+
+    } else if (
+        turnoActual >= personajes.length
+    ) {
+
+        turnoActual =
+            personajes.length - 1;
+    }
+
+
+    save();
+
+    render();
+}
+
+
+
+/* ==================================================
+   ORDENAR
+================================================== */
+
+function ordenar() {
+
+    personajes.forEach(
+        (p, i) => {
+
+            const input =
+                document.getElementById(
+                    `dado-${i}`
+                );
+
+
+            if (input) {
+
+                const valor =
+                    parseInt(input.value);
+
+                p.dado =
+                    Number.isNaN(valor)
+                        ? 0
+                        : valor;
+            }
 
 
             p.total =
                 iniciativaSeleccionada(p) +
-                p.dado;
+                (Number(p.dado) || 0);
         }
-
-    });
-
-
-    personajes.sort(
-        (a,b) =>
-            b.total - a.total
     );
 
 
@@ -847,35 +919,105 @@ if(!modoCombate){
         "combate";
 
 
-    modoCombate =
-        true;
+    turnoActual = 0;
 
 
-    turnoActual =
-        0;
+    save();
+
+    render();
+}
 
 
-/*
- * FINALIZAR RONDA
- */
 
-}else{
+/* ==================================================
+   INICIAR / FINALIZAR COMBATE
+================================================== */
 
-    /*
-     * GUARDAMOS LOS RESULTADOS
-     * DE LA RONDA TERMINADA
-     */
+function iniciarCombate() {
+
+    if (
+        personajes.length === 0
+    ) {
+        return;
+    }
+
+
+    /* ==============================================
+       INICIAR COMBATE
+    ============================================== */
+
+    if (!modoCombate) {
+
+        personajes.forEach(
+            (p, i) => {
+
+                const input =
+                    document.getElementById(
+                        `dado-${i}`
+                    );
+
+
+                if (input) {
+
+                    const valor =
+                        parseInt(input.value);
+
+                    p.dado =
+                        Number.isNaN(valor)
+                            ? 0
+                            : valor;
+                }
+
+
+                p.total =
+                    iniciativaSeleccionada(p) +
+                    (Number(p.dado) || 0);
+            }
+        );
+
+
+        personajes =
+            ordenarCombate(
+                personajes
+            );
+
+
+        modoOrden =
+            "combate";
+
+
+        modoCombate =
+            true;
+
+
+        turnoActual = 0;
+
+
+        save();
+
+        render();
+
+        return;
+    }
+
+
+
+    /* ==============================================
+       FINALIZAR RONDA ACTUAL
+    ============================================== */
 
     const resultados =
-        personajes.map(p => ({
+        personajes.map(
+            p => ({
 
-            nombre:
-                p.nombre,
+                nombre:
+                    p.nombre,
 
-            total:
-                p.total
+                total:
+                    Number(p.total) || 0
 
-        }));
+            })
+        );
 
 
     historico.push({
@@ -890,725 +1032,272 @@ if(!modoCombate){
 
 
     /*
-     * PASAMOS A LA
-     * SIGUIENTE RONDA
-     */
+       Pasamos a la siguiente ronda.
+    */
 
     rondaActual++;
 
 
     /*
-     * LOS DADOS VUELVEN A 0
-     */
+       Los dados vuelven a 0,
+       pero se mantiene la iniciativa
+       seleccionada por cada personaje.
+    */
 
-    personajes.forEach(p => {
+    personajes.forEach(
+        p => {
 
-        p.dado =
-            0;
+            p.dado = 0;
 
-
-        p.total =
-            iniciativaSeleccionada(p);
-
-    });
-
-
-    turnoActual =
-        0;
-
-
-    /*
-     * EL COMBATE SIGUE ACTIVO
-     */
-
-    modoCombate =
-        true;
-
-
-    modoOrden =
-        "combate";
-
-}
-
-
-save();
-
-render();
-```
-
-}
-
-/* =========================
-SIGUIENTE TURNO
-========================= */
-
-function siguienteTurno(){
-
-```
-if(!modoCombate){
-    return;
-}
-
-
-turnoActual++;
-
-
-if(
-    turnoActual >=
-    personajes.length
-){
-
-    turnoActual =
-        0;
-}
-
-
-render();
-```
-
-}
-
-/* =========================
-COMBATE NUEVO
-========================= */
-
-function nuevoCombate(){
-
-```
-rondaActual =
-    1;
-
-
-historico =
-    [];
-
-
-turnoActual =
-    0;
-
-
-modoCombate =
-    false;
-
-
-modoOrden =
-    "preparacion";
-
-
-personajes.forEach(p => {
-
-    p.dado =
-        0;
-
-
-    p.iniciativaSeleccionada =
-        0;
-
-
-    p.total =
-        iniciativaSeleccionada(p);
-
-
-    p.warning =
-        [];
-
-});
-
-
-save();
-
-render();
-```
-
-}
-
-/* =========================
-HISTÓRICO
-========================= */
-
-function renderHistorico(){
-
-```
-const contenedor =
-    document.getElementById(
-        "historicoLista"
+            p.total =
+                iniciativaSeleccionada(p);
+        }
     );
 
 
-if(historico.length === 0){
+    turnoActual = 0;
 
-    contenedor.innerHTML = `
+    modoCombate = true;
 
-        <p class="sin-historico">
-            Todavía no hay rondas registradas.
-        </p>
+    modoOrden = "combate";
 
-    `;
 
-    return;
+    save();
+
+    render();
 }
 
 
-contenedor.innerHTML =
-    "";
+
+/* ==================================================
+   SIGUIENTE TURNO
+================================================== */
+
+function siguienteTurno() {
+
+    if (!modoCombate) {
+        return;
+    }
 
 
-/*
- * MOSTRAMOS LAS RONDAS
- * MÁS RECIENTES ARRIBA
- */
-
-[...historico]
-    .reverse()
-    .forEach(registro => {
-
-        const details =
-            document.createElement(
-                "details"
-            );
+    if (
+        personajes.length === 0
+    ) {
+        return;
+    }
 
 
-        const summary =
-            document.createElement(
-                "summary"
-            );
+    turnoActual++;
 
 
-        summary.textContent =
-            `Ronda ${registro.ronda}`;
+    if (
+        turnoActual >=
+        personajes.length
+    ) {
+
+        turnoActual = 0;
+    }
 
 
-        details.appendChild(
-            summary
+    render();
+}
+
+
+
+/* ==================================================
+   COMBATE NUEVO
+================================================== */
+
+function nuevoCombate() {
+
+    rondaActual = 1;
+
+    historico = [];
+
+    turnoActual = 0;
+
+    modoCombate = false;
+
+    modoOrden = "preparacion";
+
+
+    personajes.forEach(
+        p => {
+
+            p.dado = 0;
+
+            /*
+               Volvemos a la primera iniciativa
+               (A).
+            */
+
+            p.iniciativaSeleccionada = 0;
+
+            p.total =
+                iniciativaSeleccionada(p);
+
+            p.warning = [];
+        }
+    );
+
+
+    save();
+
+    render();
+}
+
+
+
+/* ==================================================
+   HISTÓRICO
+================================================== */
+
+function renderHistorico() {
+
+    const contenedor =
+        document.getElementById(
+            "historicoLista"
         );
 
 
-        const contenido =
-            document.createElement(
-                "div"
-            );
+    if (!contenedor) {
+        return;
+    }
 
 
-        contenido.className =
-            "historico-ronda";
+    if (
+        historico.length === 0
+    ) {
+
+        contenedor.innerHTML = `
+
+            <p class="sin-historico">
+                Todavía no hay rondas registradas.
+            </p>
+
+        `;
+
+        return;
+    }
 
 
-        registro.resultados
-            .forEach(resultado => {
+    contenedor.innerHTML = "";
 
-                const fila =
+
+    /*
+       La ronda más reciente aparece primero.
+    */
+
+    [...historico]
+        .reverse()
+        .forEach(
+            registro => {
+
+                const details =
+                    document.createElement(
+                        "details"
+                    );
+
+
+                const summary =
+                    document.createElement(
+                        "summary"
+                    );
+
+
+                summary.textContent =
+                    `⚔ Ronda ${registro.ronda}`;
+
+
+                details.appendChild(
+                    summary
+                );
+
+
+                const contenido =
                     document.createElement(
                         "div"
                     );
 
 
-                fila.className =
-                    "historico-personaje";
+                contenido.className =
+                    "historico-ronda";
 
 
-                fila.innerHTML = `
+                registro.resultados
+                    .forEach(
+                        resultado => {
 
-                    <span>
-                        ${resultado.nombre}
-                    </span>
-
-                    <strong>
-                        ${resultado.total}
-                    </strong>
-
-                `;
+                            const fila =
+                                document.createElement(
+                                    "div"
+                                );
 
 
-                contenido.appendChild(
-                    fila
+                            fila.className =
+                                "historico-personaje";
+
+
+                            fila.innerHTML = `
+
+                                <span>
+                                    ${resultado.nombre}
+                                </span>
+
+                                <strong>
+                                    ${resultado.total}
+                                </strong>
+
+                            `;
+
+
+                            contenido.appendChild(
+                                fila
+                            );
+                        }
+                    );
+
+
+                details.appendChild(
+                    contenido
                 );
 
-            });
 
-
-        details.appendChild(
-            contenido
+                contenedor.appendChild(
+                    details
+                );
+            }
         );
-
-
-        contenedor.appendChild(
-            details
-        );
-
-    });
-```
-
 }
 
-/* =========================
-CERRAR TECLADO
-========================= */
+
+
+/* ==================================================
+   CERRAR TECLADO AL PULSAR FUERA
+================================================== */
 
 document.addEventListener(
-"click",
-function(e){
+    "click",
+    function(event) {
 
-```
-    if(
-        e.target.tagName !== "INPUT"
-    ){
+        if (
+            event.target.tagName !== "INPUT"
+        ) {
 
-        document.activeElement.blur();
+            if (
+                document.activeElement &&
+                typeof document.activeElement.blur === "function"
+            ) {
+                document.activeElement.blur();
+            }
+        }
     }
-
-}
-```
-
 );
 
-/* =========================
-INICIO
-========================= */
+
+
+/* ==================================================
+   INICIO
+================================================== */
 
 render();
-
-```
-
-## 3. `style.css`
-
-:::writing{variant="document" id="92647" title="style.css"}
-body{
-    margin:0;
-    font-family:Arial, sans-serif;
-    background:#121212;
-    color:white;
-}
-
-*{
-    box-sizing:border-box;
-}
-
-
-.app{
-    width:100%;
-    max-width:500px;
-    margin:auto;
-    padding:15px;
-    padding-bottom:125px;
-}
-
-
-h1{
-    text-align:center;
-    font-size:25px;
-    margin:8px 0 18px;
-}
-
-
-/* =========================
-   PANEL CREACIÓN
-========================= */
-
-.panel{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-    margin-bottom:14px;
-}
-
-
-.panel > input{
-    width:100%;
-    padding:11px;
-    font-size:16px;
-    border-radius:8px;
-    border:none;
-}
-
-
-.iniciativas-panel{
-    background:#1b1b1b;
-    padding:9px;
-    border-radius:8px;
-}
-
-
-.iniciativas-titulo{
-    font-size:13px;
-    color:#aaa;
-    margin-bottom:7px;
-}
-
-
-.iniciativa-inputs{
-    display:grid;
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap:5px;
-}
-
-
-.ini-input{
-    display:flex;
-    align-items:center;
-    gap:3px;
-    min-width:0;
-}
-
-
-.ini-input span{
-    font-weight:bold;
-    font-size:13px;
-    width:13px;
-    text-align:center;
-}
-
-
-.ini-input input{
-    width:100%;
-    min-width:0;
-    padding:8px 3px;
-    font-size:14px;
-    border:none;
-    border-radius:6px;
-}
-
-
-.panel > button{
-    width:100%;
-}
-
-
-/* =========================
-   RONDA
-========================= */
-
-.ronda-indicador{
-    background:#f9a825;
-    color:#121212;
-    font-weight:bold;
-    text-align:center;
-    padding:7px;
-    border-radius:7px;
-    margin:12px 0;
-    font-size:15px;
-}
-
-
-/* =========================
-   CARTAS
-========================= */
-
-.card{
-    background:#1f1f1f;
-    padding:12px;
-    margin:9px 0;
-    border-radius:10px;
-    position:relative;
-    padding-right:55px;
-}
-
-
-.nombre-personaje{
-    display:block;
-    font-size:17px;
-    margin-bottom:8px;
-}
-
-
-/* =========================
-   BOTONES DE INICIATIVA
-========================= */
-
-.selector-iniciativas{
-    display:flex;
-    gap:5px;
-    flex-wrap:wrap;
-    margin:5px 0 9px;
-}
-
-
-.boton-iniciativa{
-    margin:0;
-    padding:7px 9px;
-    background:#333;
-    color:#ddd;
-    border:1px solid #555;
-    border-radius:6px;
-    font-size:13px;
-    min-width:45px;
-}
-
-
-.boton-iniciativa strong{
-    margin-right:3px;
-    color:white;
-}
-
-
-.boton-iniciativa.seleccionada{
-    background:#f9a825;
-    color:#121212;
-    border-color:#f9a825;
-}
-
-
-.boton-iniciativa.seleccionada strong{
-    color:#121212;
-}
-
-
-.iniciativa-unica{
-    color:#999;
-    font-size:13px;
-    margin-bottom:7px;
-}
-
-
-/* =========================
-   DADO
-========================= */
-
-.dado-linea{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    margin-top:5px;
-}
-
-
-.dado-linea input{
-    width:75px;
-    padding:8px;
-    margin:0;
-    font-size:16px;
-}
-
-
-.total-linea{
-    display:flex;
-    align-items:center;
-    flex-wrap:wrap;
-    margin-top:8px;
-    font-size:18px;
-    font-weight:bold;
-    gap:8px;
-}
-
-
-.warning{
-    color:#e53935;
-    font-size:13px;
-    font-weight:normal;
-}
-
-
-.delete{
-    position:absolute;
-    right:9px;
-    top:50%;
-    transform:translateY(-50%);
-    background:#e53935;
-    color:white;
-    padding:9px;
-}
-
-
-/* =========================
-   BARRA FIJA
-========================= */
-
-#combatBtns{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-
-    background:#121212;
-
-    padding:7px;
-
-    display:flex;
-    flex-direction:column;
-
-    gap:5px;
-
-    border-top:2px solid #333;
-
-    z-index:100;
-}
-
-
-.botones-principales{
-    width:100%;
-    display:flex;
-    gap:5px;
-}
-
-
-.botones-secundarios{
-    width:100%;
-    display:flex;
-}
-
-
-.botones-principales button{
-    flex:1;
-}
-
-
-.botones-secundarios button{
-    width:100%;
-}
-
-
-#combatBtns button{
-    margin:0;
-    min-width:0;
-    font-size:12px;
-    padding:9px 4px;
-}
-
-
-/* =========================
-   COLORES BOTONES
-========================= */
-
-.combat.ordenar{
-    background:#f9a825;
-    color:#121212;
-}
-
-
-.combat.iniciar{
-    background:#1e88e5;
-    color:white;
-}
-
-
-.combat.iniciar.activo{
-    background:#e53935 !important;
-}
-
-
-.combat.siguiente{
-    background:#6a1b9a;
-    color:white;
-}
-
-
-.combat.nuevo{
-    background:#424242;
-    color:white;
-}
-
-
-/* =========================
-   HISTÓRICO
-========================= */
-
-#historico{
-    margin-top:110px;
-    padding-top:25px;
-    border-top:2px solid #333;
-}
-
-
-#historico h2{
-    font-size:20px;
-    margin-bottom:15px;
-}
-
-
-#historico details{
-    background:#1f1f1f;
-    border-radius:8px;
-    margin-bottom:8px;
-    overflow:hidden;
-}
-
-
-#historico summary{
-    padding:12px;
-    cursor:pointer;
-    font-weight:bold;
-    color:#f9a825;
-    font-size:15px;
-}
-
-
-.historico-ronda{
-    padding:5px 12px 12px;
-}
-
-
-.historico-personaje{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:8px 0;
-    border-bottom:1px solid #333;
-    gap:10px;
-}
-
-
-.historico-personaje:last-child{
-    border-bottom:none;
-}
-
-
-.historico-personaje strong{
-    font-size:17px;
-}
-
-
-.sin-historico{
-    color:#888;
-    font-size:14px;
-}
-
-
-/* =========================
-   MÓVIL
-========================= */
-
-@media(max-width:380px){
-
-    .app{
-        padding-left:10px;
-        padding-right:10px;
-    }
-
-
-    h1{
-        font-size:23px;
-    }
-
-
-    .iniciativa-inputs{
-        gap:3px;
-    }
-
-
-    .ini-input span{
-        font-size:12px;
-        width:12px;
-    }
-
-
-    .ini-input input{
-        font-size:13px;
-        padding:8px 2px;
-    }
-
-
-    #combatBtns button{
-        font-size:11px;
-        padding:8px 2px;
-    }
-
-
-    .boton-iniciativa{
-        font-size:12px;
-        padding:7px 8px;
-    }
-
-}
-```
-
