@@ -163,7 +163,7 @@ function cambiarDado(
 
 
 /* ==================================================
-   ACTUALIZAR TOTALES SIN REDIBUJAR
+   ACTUALIZAR TOTALES
 ================================================== */
 
 function actualizarTotalesVisuales() {
@@ -215,6 +215,12 @@ function siguienteInput(actualId) {
     const next =
         inputs[index + 1];
 
+
+    /*
+       Guardamos el valor actual.
+       Si está vacío, se considera 0.
+    */
+
     if (current) {
 
         const valor =
@@ -226,18 +232,41 @@ function siguienteInput(actualId) {
                 : valor;
     }
 
+
+    /*
+       Pasamos al siguiente personaje.
+       MUY IMPORTANTE:
+       dejamos el campo completamente vacío
+       antes de darle el foco.
+    */
+
     if (next) {
 
-        next.focus();
+        next.value = "";
 
-        next.select();
+        /*
+           Un pequeño retraso hace que funcione
+           correctamente también en móviles.
+        */
+
+        setTimeout(() => {
+
+            next.focus();
+
+        }, 50);
 
     } else {
+
+        /*
+           Si era el último personaje,
+           cerramos el teclado.
+        */
 
         if (
             document.activeElement &&
             typeof document.activeElement.blur === "function"
         ) {
+
             document.activeElement.blur();
         }
     }
@@ -401,11 +430,6 @@ function render() {
         }
     }
 
-
-    /*
-       El orden visual pasa a ser también
-       el orden del array.
-    */
 
     personajes =
         ordenados;
@@ -586,7 +610,11 @@ function render() {
                         <input
                             type="number"
                             id="dado-${i}"
-                            value="${Number(p.dado) || 0}"
+                            value="${
+                                Number(p.dado) === 0
+                                    ? ""
+                                    : p.dado
+                            }"
                             oninput="cambiarDado(${i}, this.value)"
                             onkeydown="
                                 if(event.key === 'Enter'){
@@ -773,11 +801,6 @@ function addPersonaje() {
     );
 
 
-    /*
-       Si no se introduce ninguna iniciativa,
-       se utiliza 0.
-    */
-
     if (valores.length === 0) {
 
         valores.push(0);
@@ -828,11 +851,6 @@ function addPersonaje() {
 
     render();
 
-
-    /*
-       Volver al campo nombre
-       para poder añadir rápidamente otro.
-    */
 
     nombreInput.focus();
 }
@@ -1001,7 +1019,6 @@ function iniciarCombate() {
     }
 
 
-
     /* ==============================================
        FINALIZAR RONDA ACTUAL
     ============================================== */
@@ -1031,18 +1048,8 @@ function iniciarCombate() {
     });
 
 
-    /*
-       Pasamos a la siguiente ronda.
-    */
-
     rondaActual++;
 
-
-    /*
-       Los dados vuelven a 0,
-       pero se mantiene la iniciativa
-       seleccionada por cada personaje.
-    */
 
     personajes.forEach(
         p => {
@@ -1126,11 +1133,6 @@ function nuevoCombate() {
 
             p.dado = 0;
 
-            /*
-               Volvemos a la primera iniciativa
-               (A).
-            */
-
             p.iniciativaSeleccionada = 0;
 
             p.total =
@@ -1183,10 +1185,6 @@ function renderHistorico() {
 
     contenedor.innerHTML = "";
 
-
-    /*
-       La ronda más reciente aparece primero.
-    */
 
     [...historico]
         .reverse()
@@ -1273,7 +1271,7 @@ function renderHistorico() {
 
 
 /* ==================================================
-   CERRAR TECLADO AL PULSAR FUERA
+   CERRAR TECLADO
 ================================================== */
 
 document.addEventListener(
@@ -1288,6 +1286,7 @@ document.addEventListener(
                 document.activeElement &&
                 typeof document.activeElement.blur === "function"
             ) {
+
                 document.activeElement.blur();
             }
         }
