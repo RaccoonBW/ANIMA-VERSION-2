@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -7,111 +6,173 @@
     <title>Iniciativas Anima :D</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
 <div class="app">
 
-```
-<h1>Iniciativas Anima :D</h1>
+    <h1>Iniciativas Anima :D</h1>
 
-<div class="panel">
+    <!-- =========================
+         CREAR PERSONAJE
+    ========================== -->
 
-    <input id="nombre" placeholder="Nombre personaje">
+    <div class="panel">
 
-    <div class="iniciativas-panel">
+        <input
+            id="nombre"
+            type="text"
+            placeholder="Nombre personaje"
+        >
 
-        <div class="iniciativas-titulo">
-            Iniciativas
+        <div class="iniciativas-panel">
+
+            <div class="iniciativas-titulo">
+                Iniciativas
+            </div>
+
+            <div class="iniciativa-inputs">
+
+                <div class="ini-input">
+                    <span>A</span>
+                    <input
+                        id="ini1"
+                        type="number"
+                        placeholder="Valor"
+                    >
+                </div>
+
+                <div class="ini-input">
+                    <span>B</span>
+                    <input
+                        id="ini2"
+                        type="number"
+                        placeholder="Valor"
+                    >
+                </div>
+
+                <div class="ini-input">
+                    <span>C</span>
+                    <input
+                        id="ini3"
+                        type="number"
+                        placeholder="Valor"
+                    >
+                </div>
+
+                <div class="ini-input">
+                    <span>D</span>
+                    <input
+                        id="ini4"
+                        type="number"
+                        placeholder="Valor"
+                    >
+                </div>
+
+            </div>
+
         </div>
 
-        <div class="iniciativa-inputs">
+        <button
+            type="button"
+            onclick="addPersonaje()"
+        >
+            ➕ Añadir
+        </button>
 
-            <div class="ini-input">
-                <span>A</span>
-                <input id="ini1" type="number" placeholder="Valor">
-            </div>
+    </div>
 
-            <div class="ini-input">
-                <span>B</span>
-                <input id="ini2" type="number" placeholder="Valor">
-            </div>
 
-            <div class="ini-input">
-                <span>C</span>
-                <input id="ini3" type="number" placeholder="Valor">
-            </div>
+    <!-- =========================
+         RONDA
+    ========================== -->
 
-            <div class="ini-input">
-                <span>D</span>
-                <input id="ini4" type="number" placeholder="Valor">
-            </div>
+    <div
+        id="rondaActual"
+        class="ronda-indicador"
+    >
+        ⚔ Ronda 1
+    </div>
+
+
+    <!-- =========================
+         PERSONAJES
+    ========================== -->
+
+    <div id="lista"></div>
+
+
+    <!-- =========================
+         BOTONES COMBATE
+    ========================== -->
+
+    <div id="combatBtns">
+
+        <div class="botones-principales">
+
+            <button
+                type="button"
+                class="combat ordenar"
+                onclick="ordenar()"
+            >
+                🎲 Ordenar
+            </button>
+
+            <button
+                type="button"
+                class="combat iniciar"
+                onclick="iniciarCombate()"
+            >
+                ▶ Iniciar combate
+            </button>
+
+            <button
+                type="button"
+                class="combat siguiente"
+                onclick="siguienteTurno()"
+            >
+                ➡ Siguiente turno
+            </button>
+
+        </div>
+
+        <div class="botones-secundarios">
+
+            <button
+                type="button"
+                class="combat nuevo"
+                onclick="nuevoCombate()"
+            >
+                ⚔ Combate nuevo
+            </button>
 
         </div>
 
     </div>
 
-    <button onclick="addPersonaje()">➕ Añadir</button>
 
-</div>
+    <!-- =========================
+         HISTÓRICO
+    ========================== -->
 
+    <div id="historico">
 
-<div id="rondaActual" class="ronda-indicador">
-    ⚔ Ronda 1
-</div>
+        <h2>📜 Histórico de combate</h2>
 
+        <div id="historicoLista">
 
-<div id="lista"></div>
+            <p class="sin-historico">
+                Todavía no hay rondas registradas.
+            </p>
 
-
-<div id="combatBtns">
-
-    <div class="botones-principales">
-
-        <button class="combat ordenar" onclick="ordenar()">
-            🎲 Ordenar
-        </button>
-
-        <button class="combat iniciar" onclick="iniciarCombate()">
-            ▶ Iniciar combate
-        </button>
-
-        <button class="combat siguiente" onclick="siguienteTurno()">
-            ➡ Siguiente turno
-        </button>
-
-    </div>
-
-
-    <div class="botones-secundarios">
-
-        <button class="combat nuevo" onclick="nuevoCombate()">
-            ⚔ Combate nuevo
-        </button>
+        </div>
 
     </div>
 
 </div>
 
-
-<div id="historico">
-
-    <h2>📜 Histórico de combate</h2>
-
-    <div id="historicoLista">
-
-        <p class="sin-historico">
-            Todavía no hay rondas registradas.
-        </p>
-
-    </div>
-
-</div>
-```
-
-</div>
 
 <script src="script.js"></script>
 
 </body>
 </html>
-
