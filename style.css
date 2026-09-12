@@ -1,0 +1,296 @@
+body{
+    margin:0;
+    font-family:Arial;
+    background:#121212;
+    color:white;
+}
+
+.app{
+    max-width:500px;
+    margin:auto;
+    padding:20px;
+    padding-bottom:150px;
+}
+
+h1{
+    text-align:center;
+}
+
+
+/* =========================
+   PANEL CREACIÓN
+========================= */
+
+.panel{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    padding:12px;
+    font-size:16px;
+    border-radius:8px;
+    border:none;
+}
+
+.iniciativas-panel{
+    background:#1b1b1b;
+    padding:10px;
+    border-radius:8px;
+}
+
+.iniciativas-titulo{
+    font-size:14px;
+    font-weight:bold;
+    color:#bbb;
+    margin-bottom:8px;
+}
+
+.iniciativa-inputs{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+}
+
+button{
+    padding:12px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:5px;
+}
+
+
+/* =========================
+   INDICADOR DE RONDA
+========================= */
+
+.ronda-indicador{
+    background:#f9a825;
+    color:#121212;
+    font-weight:bold;
+    text-align:center;
+    padding:8px;
+    border-radius:8px;
+    margin:15px 0;
+}
+
+
+/* =========================
+   CARTAS
+========================= */
+
+.card{
+    background:#1f1f1f;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    position:relative;
+}
+
+.card input{
+    width:90px;
+    margin-top:10px;
+}
+
+.iniciativa-seleccion{
+    margin-top:10px;
+}
+
+.selector-iniciativa{
+    padding:8px;
+    border-radius:7px;
+    border:none;
+    background:#333;
+    color:white;
+    font-size:14px;
+    max-width:230px;
+}
+
+.iniciativa-unica{
+    color:#aaa;
+    font-size:14px;
+}
+
+.dado-linea{
+    margin-top:8px;
+}
+
+.total-linea{
+    display:flex;
+    align-items:center;
+    margin-top:8px;
+    font-size:18px;
+    font-weight:bold;
+    gap:10px;
+}
+
+.warning{
+    color:#e53935;
+    font-size:14px;
+    font-weight:normal;
+}
+
+.delete{
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
+    background:#e53935;
+    color:white;
+}
+
+
+/* =========================
+   BARRA FIJA
+========================= */
+
+#combatBtns{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+
+    background:#121212;
+    padding:8px;
+
+    display:flex;
+    flex-direction:row;
+    gap:6px;
+
+    border-top:2px solid #333;
+
+    z-index:100;
+}
+
+#combatBtns button{
+    flex:1;
+    font-size:12px;
+    padding:9px 5px;
+    margin:0;
+}
+
+
+/* =========================
+   BOTONES
+========================= */
+
+.combat.ordenar{
+    background:#f9a825;
+}
+
+.combat.iniciar{
+    background:#1e88e5;
+    color:white;
+}
+
+.combat.iniciar.activo{
+    background:#e53935 !important;
+}
+
+.combat.siguiente{
+    background:#6a1b9a;
+}
+
+.combat.terminar{
+    background:#00897b;
+    color:white;
+}
+
+.combat.nuevo{
+    background:#424242;
+    color:white;
+}
+
+
+/* =========================
+   HISTÓRICO
+========================= */
+
+#historico{
+    margin-top:100px;
+    padding-top:25px;
+    border-top:2px solid #333;
+}
+
+#historico h2{
+    font-size:20px;
+    margin-bottom:15px;
+}
+
+#historico details{
+    background:#1f1f1f;
+    border-radius:8px;
+    margin-bottom:8px;
+    overflow:hidden;
+}
+
+#historico summary{
+    padding:13px;
+    cursor:pointer;
+    font-weight:bold;
+    color:#f9a825;
+    font-size:16px;
+}
+
+.historico-ronda{
+    padding:5px 13px 13px 13px;
+}
+
+.historico-personaje{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 0;
+    border-bottom:1px solid #333;
+}
+
+.historico-personaje:last-child{
+    border-bottom:none;
+}
+
+.historico-personaje strong{
+    font-size:17px;
+}
+
+.sin-historico{
+    color:#888;
+    font-size:14px;
+}
+
+
+/* =========================
+   TURNO ACTIVO
+========================= */
+
+.activoTurno{
+    color:#e53935;
+    font-weight:bold;
+}
+
+
+/* =========================
+   MÓVIL
+========================= */
+
+@media(max-width:420px){
+
+    #combatBtns{
+        gap:4px;
+        padding:6px;
+    }
+
+    #combatBtns button{
+        font-size:10px;
+        padding:8px 3px;
+    }
+
+    .app{
+        padding-left:12px;
+        padding-right:12px;
+        padding-bottom:130px;
+    }
+}
