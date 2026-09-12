@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciativas Anima :D</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+    <h1>Iniciativas Anima :D</h1>
+
+    <div class="panel">
+        <input id="nombre" placeholder="Nombre personaje">
+
+        <div class="iniciativas-panel">
+            <div class="iniciativas-titulo">Valores de iniciativa</div>
+
+            <div class="iniciativa-inputs">
+                <input id="ini1" type="number" placeholder="Iniciativa 1">
+                <input id="ini2" type="number" placeholder="Iniciativa 2">
+                <input id="ini3" type="number" placeholder="Iniciativa 3">
+                <input id="ini4" type="number" placeholder="Iniciativa 4">
+            </div>
+        </div>
+
+        <button onclick="addPersonaje()">➕ Añadir</button>
+    </div>
+
+    <div id="rondaActual" class="ronda-indicador">
+        ⚔ Ronda 1
+    </div>
+
+    <div id="lista"></div>
+
+    <div id="combatBtns">
+
+        <button class="combat ordenar" onclick="ordenar()">
+            🎲 Ordenar
+        </button>
+
+        <button class="combat iniciar" onclick="iniciarCombate()">
+            ▶ Iniciar combate
+        </button>
+
+        <button class="combat siguiente" onclick="siguienteTurno()">
+            ➡ Siguiente turno
+        </button>
+
+        <button class="combat terminar" onclick="terminarRonda()">
+            🏁 Terminar ronda
+        </button>
+
+        <button class="combat nuevo" onclick="nuevoCombate()">
+            ⚔ Combate nuevo
+        </button>
+
+    </div>
+
+    <div id="historico">
+
+        <h2>📜 Histórico de combate</h2>
+
+        <div id="historicoLista">
+            <p class="sin-historico">
+                Todavía no hay rondas registradas.
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
