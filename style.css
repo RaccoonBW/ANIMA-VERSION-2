@@ -1,19 +1,28 @@
 body{
     margin:0;
-    font-family:Arial;
+    font-family:Arial, sans-serif;
     background:#121212;
     color:white;
 }
 
+*{
+    box-sizing:border-box;
+}
+
+
 .app{
+    width:100%;
     max-width:500px;
     margin:auto;
-    padding:20px;
-    padding-bottom:150px;
+    padding:15px;
+    padding-bottom:125px;
 }
+
 
 h1{
     text-align:center;
+    font-size:25px;
+    margin:8px 0 18px;
 }
 
 
@@ -24,48 +33,74 @@ h1{
 .panel{
     display:flex;
     flex-direction:column;
-    gap:10px;
-    margin-bottom:20px;
+    gap:8px;
+    margin-bottom:14px;
 }
 
-input{
-    padding:12px;
+
+.panel > input{
+    width:100%;
+    padding:11px;
     font-size:16px;
     border-radius:8px;
     border:none;
 }
+
 
 .iniciativas-panel{
     background:#1b1b1b;
-    padding:10px;
+    padding:9px;
     border-radius:8px;
 }
 
+
 .iniciativas-titulo{
-    font-size:14px;
-    font-weight:bold;
-    color:#bbb;
-    margin-bottom:8px;
+    font-size:13px;
+    color:#aaa;
+    margin-bottom:7px;
 }
+
 
 .iniciativa-inputs{
     display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:8px;
+    grid-template-columns:repeat(4, 1fr);
+    gap:5px;
 }
 
-button{
-    padding:12px;
-    font-size:16px;
+
+.ini-input{
+    display:flex;
+    align-items:center;
+    gap:3px;
+    min-width:0;
+}
+
+
+.ini-input span{
+    font-weight:bold;
+    font-size:13px;
+    width:13px;
+    text-align:center;
+}
+
+
+.ini-input input{
+    width:100%;
+    min-width:0;
+    padding:8px 3px;
+    font-size:14px;
     border:none;
-    border-radius:8px;
-    cursor:pointer;
-    margin-top:5px;
+    border-radius:6px;
+}
+
+
+.panel > button{
+    width:100%;
 }
 
 
 /* =========================
-   INDICADOR DE RONDA
+   RONDA
 ========================= */
 
 .ronda-indicador{
@@ -73,9 +108,10 @@ button{
     color:#121212;
     font-weight:bold;
     text-align:center;
-    padding:8px;
-    border-radius:8px;
-    margin:15px 0;
+    padding:7px;
+    border-radius:7px;
+    margin:12px 0;
+    font-size:15px;
 }
 
 
@@ -86,61 +122,145 @@ button{
 .card{
     background:#1f1f1f;
     padding:12px;
-    margin:10px 0;
+    margin:9px 0;
     border-radius:10px;
     position:relative;
+    padding-right:55px;
 }
 
-.card input{
-    width:90px;
-    margin-top:10px;
+
+.nombre-personaje{
+    display:block;
+    font-size:17px;
+    margin-bottom:8px;
 }
 
-.iniciativa-seleccion{
-    margin-top:10px;
+
+/* =========================
+   BOTONES DE INICIATIVA
+========================= */
+
+.selector-iniciativas{
+    display:flex;
+    gap:5px;
+    flex-wrap:wrap;
+    margin:5px 0 9px;
 }
 
-.selector-iniciativa{
-    padding:8px;
-    border-radius:7px;
-    border:none;
+
+.boton-iniciativa{
+    margin:0;
+    padding:7px 9px;
     background:#333;
-    color:white;
-    font-size:14px;
-    max-width:230px;
+    color:#ddd;
+    border:1px solid #555;
+    border-radius:6px;
+    font-size:13px;
+    min-width:45px;
+    cursor:pointer;
 }
+
+
+.boton-iniciativa strong{
+    margin-right:3px;
+    color:white;
+}
+
+
+.boton-iniciativa.seleccionada{
+    background:#f9a825;
+    color:#121212;
+    border-color:#f9a825;
+}
+
+
+.boton-iniciativa.seleccionada strong{
+    color:#121212;
+}
+
 
 .iniciativa-unica{
-    color:#aaa;
-    font-size:14px;
+    color:#999;
+    font-size:13px;
+    margin-bottom:7px;
 }
 
+
+/* =========================
+   DADO
+========================= */
+
 .dado-linea{
-    margin-top:8px;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    margin-top:5px;
 }
+
+
+.dado-linea input{
+    width:75px;
+    padding:8px;
+    margin:0;
+    font-size:16px;
+    border-radius:6px;
+    border:none;
+}
+
 
 .total-linea{
     display:flex;
     align-items:center;
+    flex-wrap:wrap;
     margin-top:8px;
     font-size:18px;
     font-weight:bold;
-    gap:10px;
+    gap:8px;
 }
+
 
 .warning{
     color:#e53935;
-    font-size:14px;
+    font-size:13px;
     font-weight:normal;
 }
 
+
+/* =========================
+   BOTÓN BORRAR
+========================= */
+
 .delete{
     position:absolute;
-    right:10px;
+    right:9px;
     top:50%;
     transform:translateY(-50%);
     background:#e53935;
     color:white;
+    padding:9px;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+
+/* =========================
+   BOTONES GENERALES
+========================= */
+
+button{
+    border:none;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+
+.panel > button{
+    background:#43a047;
+    color:white;
+    padding:11px;
+    font-size:15px;
 }
 
 
@@ -155,50 +275,77 @@ button{
     right:0;
 
     background:#121212;
-    padding:8px;
+
+    padding:7px;
 
     display:flex;
-    flex-direction:row;
-    gap:6px;
+    flex-direction:column;
+
+    gap:5px;
 
     border-top:2px solid #333;
 
     z-index:100;
 }
 
-#combatBtns button{
+
+.botones-principales{
+    width:100%;
+    display:flex;
+    gap:5px;
+}
+
+
+.botones-secundarios{
+    width:100%;
+    display:flex;
+}
+
+
+.botones-principales button{
     flex:1;
-    font-size:12px;
-    padding:9px 5px;
+}
+
+
+.botones-secundarios button{
+    width:100%;
+}
+
+
+#combatBtns button{
     margin:0;
+    min-width:0;
+    font-size:12px;
+    padding:9px 4px;
 }
 
 
 /* =========================
-   BOTONES
+   COLORES BOTONES
 ========================= */
 
 .combat.ordenar{
     background:#f9a825;
+    color:#121212;
 }
+
 
 .combat.iniciar{
     background:#1e88e5;
     color:white;
 }
 
+
 .combat.iniciar.activo{
     background:#e53935 !important;
 }
 
+
 .combat.siguiente{
     background:#6a1b9a;
-}
-
-.combat.terminar{
-    background:#00897b;
     color:white;
 }
+
 
 .combat.nuevo{
     background:#424242;
@@ -211,15 +358,17 @@ button{
 ========================= */
 
 #historico{
-    margin-top:100px;
+    margin-top:110px;
     padding-top:25px;
     border-top:2px solid #333;
 }
+
 
 #historico h2{
     font-size:20px;
     margin-bottom:15px;
 }
+
 
 #historico details{
     background:#1f1f1f;
@@ -228,17 +377,20 @@ button{
     overflow:hidden;
 }
 
+
 #historico summary{
-    padding:13px;
+    padding:12px;
     cursor:pointer;
     font-weight:bold;
     color:#f9a825;
-    font-size:16px;
+    font-size:15px;
 }
 
+
 .historico-ronda{
-    padding:5px 13px 13px 13px;
+    padding:5px 12px 12px;
 }
+
 
 .historico-personaje{
     display:flex;
@@ -246,15 +398,19 @@ button{
     align-items:center;
     padding:8px 0;
     border-bottom:1px solid #333;
+    gap:10px;
 }
+
 
 .historico-personaje:last-child{
     border-bottom:none;
 }
 
+
 .historico-personaje strong{
     font-size:17px;
 }
+
 
 .sin-historico{
     color:#888;
@@ -263,34 +419,48 @@ button{
 
 
 /* =========================
-   TURNO ACTIVO
-========================= */
-
-.activoTurno{
-    color:#e53935;
-    font-weight:bold;
-}
-
-
-/* =========================
    MÓVIL
 ========================= */
 
-@media(max-width:420px){
-
-    #combatBtns{
-        gap:4px;
-        padding:6px;
-    }
-
-    #combatBtns button{
-        font-size:10px;
-        padding:8px 3px;
-    }
+@media(max-width:380px){
 
     .app{
-        padding-left:12px;
-        padding-right:12px;
-        padding-bottom:130px;
+        padding-left:10px;
+        padding-right:10px;
     }
+
+
+    h1{
+        font-size:23px;
+    }
+
+
+    .iniciativa-inputs{
+        gap:3px;
+    }
+
+
+    .ini-input span{
+        font-size:12px;
+        width:12px;
+    }
+
+
+    .ini-input input{
+        font-size:13px;
+        padding:8px 2px;
+    }
+
+
+    #combatBtns button{
+        font-size:11px;
+        padding:8px 2px;
+    }
+
+
+    .boton-iniciativa{
+        font-size:12px;
+        padding:7px 8px;
+    }
+
 }
