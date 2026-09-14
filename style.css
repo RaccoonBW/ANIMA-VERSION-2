@@ -1,185 +1,137 @@
 ```css
-* {
-    box-sizing: border-box;
-}
-
-html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    background: #101114;
-    color: #eeeeee;
-    font-family: Arial, Helvetica, sans-serif;
-    min-height: 100vh;
-}
-
-.app {
-    width: 100%;
-    max-width: 500px;
-    margin: 0 auto;
-
-    padding: 15px;
-    padding-bottom: 105px;
-}
-
 /* =========================================
-   TÍTULO
+   GENERAL
 ========================================= */
 
-h1 {
-    text-align: center;
-    margin: 5px 0 18px;
+*{
+    box-sizing:border-box;
+}
 
-    font-size: 24px;
-    color: #ffffff;
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#121212;
+    color:white;
+}
 
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+.app{
+    max-width:500px;
+    margin:auto;
+    padding:20px;
+    padding-bottom:105px;
+}
+
+h1{
+    text-align:center;
+    margin-top:0;
+    margin-bottom:20px;
 }
 
 
 /* =========================================
-   PANEL PARA AÑADIR
+   PANEL PARA AÑADIR PERSONAJE
 ========================================= */
 
-.panel {
-    background: #202228;
-
-    border: 1px solid #3a3d46;
-    border-radius: 10px;
-
-    padding: 12px;
-    margin-bottom: 8px;
-
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+.panel{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:15px;
 }
 
 
 /* =========================================
-   CAMPOS BLANCOS
+   CAMPOS
 ========================================= */
 
-.panel > input,
-.ini-input input,
-.dado-linea input {
-    background: #ffffff;
-
-    color: #111111;
-
-    border: 1px solid #bbbbbb;
-    border-radius: 6px;
-
-    font-family: Arial, Helvetica, sans-serif;
+input{
+    padding:12px;
+    font-size:16px;
+    border-radius:8px;
+    border:none;
+    background:white;
+    color:#111;
 }
 
-.panel > input {
-    width: 100%;
-    height: 40px;
-
-    padding: 8px 10px;
-
-    font-size: 16px;
-
-    margin-bottom: 10px;
+input::placeholder{
+    color:#777;
 }
 
-.panel > input::placeholder,
-.ini-input input::placeholder,
-.dado-linea input::placeholder {
-    color: #777777;
+input:focus{
+    outline:2px solid #1e88e5;
 }
 
 
 /* =========================================
-   INICIATIVAS
+   BOTONES GENERALES
 ========================================= */
 
-.iniciativas-panel {
-    margin-bottom: 10px;
-}
-
-.iniciativas-titulo {
-    font-size: 13px;
-    color: #bfc3cc;
-
-    margin-bottom: 6px;
-}
-
-.iniciativa-inputs {
-    display: flex;
-    gap: 5px;
-}
-
-.ini-input {
-    flex: 1;
-    min-width: 0;
-
-    display: flex;
-    align-items: center;
-
-    gap: 3px;
-}
-
-.ini-input span {
-    font-size: 12px;
-    font-weight: bold;
-
-    color: #c8cbd2;
-}
-
-.ini-input input {
-    width: 100%;
-    min-width: 0;
-
-    height: 34px;
-
-    padding: 5px 6px;
-
-    font-size: 14px;
-}
-
-.ini-input input:focus,
-.panel > input:focus,
-.dado-linea input:focus {
-    outline: none;
-
-    border-color: #4da3ff;
-
-    box-shadow: 0 0 0 2px rgba(77, 163, 255, 0.18);
+button{
+    padding:12px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    margin-top:5px;
 }
 
 
 /* =========================================
-   AÑADIR
+   BOTÓN AÑADIR
 ========================================= */
 
-.panel > button {
-    width: 100%;
-    height: 40px;
-
-    border: none;
-    border-radius: 6px;
-
-    background: #2e8b57;
-
-    color: #ffffff;
-
-    font-size: 15px;
-    font-weight: bold;
-
-    cursor: pointer;
-
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+.panel > button{
+    background:#43a047;
+    color:white;
 }
 
-.panel > button:hover {
-    background: #35a565;
+.panel > button:hover{
+    background:#4caf50;
 }
 
-.panel > button:active {
-    transform: translateY(1px);
+
+/* =========================================
+   INICIATIVAS A/B/C/D
+========================================= */
+
+.iniciativas-panel{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.iniciativas-titulo{
+    font-size:14px;
+    color:#bbb;
+}
+
+.iniciativa-inputs{
+    display:flex;
+    gap:5px;
+    width:100%;
+}
+
+.ini-input{
+    flex:1;
+    min-width:0;
+
+    display:flex;
+    align-items:center;
+    gap:3px;
+}
+
+.ini-input span{
+    color:#bbb;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.ini-input input{
+    width:100%;
+    min-width:0;
+
+    padding:9px 5px;
+    font-size:14px;
 }
 
 
@@ -187,52 +139,34 @@ h1 {
    RONDA
 ========================================= */
 
-.ronda-indicador {
-    color: #4da3ff;
+.ronda-indicador{
+    color:#1e88e5;
+    font-size:14px;
+    font-weight:bold;
 
-    background: transparent;
-    border: none;
-
-    padding: 0;
-    margin: 10px 3px 8px;
-
-    font-size: 14px;
-    font-weight: bold;
+    margin:5px 0 8px;
 }
 
 
 /* =========================================
-   TARJETAS DE PERSONAJES
+   CARTAS
 ========================================= */
 
-.card {
-    position: relative;
-
-    background: #202228;
-
-    border: 1px solid #3a3d46;
-    border-radius: 9px;
-
-    padding: 10px;
-
-    margin-bottom: 7px;
-
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+.card{
+    background:#1f1f1f;
+    padding:12px;
+    margin:10px 0;
+    border-radius:10px;
+    position:relative;
 }
 
-.card:hover {
-    border-color: #4a4e59;
-}
+.nombre-personaje{
+    display:block;
+    font-size:18px;
+    font-weight:bold;
 
-.nombre-personaje {
-    display: block;
-
-    font-size: 17px;
-    font-weight: bold;
-
-    margin-bottom: 7px;
-
-    padding-right: 38px;
+    padding-right:40px;
+    margin-bottom:7px;
 }
 
 
@@ -240,74 +174,53 @@ h1 {
    INICIATIVA ÚNICA
 ========================================= */
 
-.iniciativa-unica {
-    color: #b8bbc3;
-
-    font-size: 13px;
-
-    margin-bottom: 7px;
+.iniciativa-unica{
+    color:#aaa;
+    font-size:14px;
+    margin-top:3px;
 }
 
-.iniciativa-unica strong {
-    color: #ffffff;
+.iniciativa-unica strong{
+    color:white;
 }
 
 
 /* =========================================
-   SELECTOR DE INICIATIVAS
+   VARIAS INICIATIVAS
 ========================================= */
 
-.selector-iniciativas {
-    display: flex;
-
-    gap: 5px;
-
-    margin-bottom: 8px;
+.selector-iniciativas{
+    display:flex;
+    gap:5px;
+    width:100%;
+    margin-bottom:5px;
 }
 
-.boton-iniciativa {
-    flex: 1;
+.boton-iniciativa{
+    flex:1;
 
-    min-width: 0;
+    padding:7px 4px;
+    margin:0;
 
-    height: 32px;
+    font-size:13px;
 
-    background: #30333a;
+    background:#333;
+    color:white;
 
-    border: 1px solid #50545d;
-    border-radius: 5px;
-
-    color: #dddddd;
-
-    cursor: pointer;
-
-    padding: 2px 4px;
-
-    font-size: 13px;
-
-    transition: 0.1s;
+    border:1px solid #555;
+    border-radius:7px;
 }
 
-.boton-iniciativa:hover {
-    background: #3a3e46;
+.boton-iniciativa:hover{
+    background:#444;
 }
 
-.boton-iniciativa strong {
-    margin-right: 2px;
-}
+.boton-iniciativa.seleccionada{
+    background:#f9a825;
+    color:#111;
 
-.boton-iniciativa.seleccionada {
-    background: #e0a800;
-
-    border-color: #ffc107;
-
-    color: #111111;
-
-    font-weight: bold;
-}
-
-.boton-iniciativa.seleccionada:hover {
-    background: #f0b400;
+    border-color:#f9a825;
+    font-weight:bold;
 }
 
 
@@ -315,32 +228,22 @@ h1 {
    DADO
 ========================================= */
 
-.dado-linea {
-    display: flex;
+.dado-linea{
+    display:flex;
+    align-items:center;
+    gap:7px;
 
-    align-items: center;
-
-    gap: 7px;
-
-    margin-top: 4px;
+    margin-top:5px;
 }
 
-.dado-linea span {
-    font-size: 13px;
-
-    color: #bfc2c9;
+.dado-linea span{
+    color:#bbb;
+    font-size:14px;
 }
 
-.dado-linea input {
-    width: 85px;
-
-    height: 34px;
-
-    padding: 4px 7px;
-
-    font-size: 16px;
-
-    font-weight: bold;
+.dado-linea input{
+    width:90px;
+    margin-top:10px;
 }
 
 
@@ -348,13 +251,10 @@ h1 {
    TOTAL
 ========================================= */
 
-.total-linea {
-    margin-top: 7px;
-
-    font-size: 14px;
-    font-weight: bold;
-
-    color: #ffffff;
+.total-linea{
+    font-size:22px;
+    font-weight:bold;
+    margin-top:10px;
 }
 
 
@@ -362,13 +262,10 @@ h1 {
    ADVERTENCIA
 ========================================= */
 
-.warning {
-    color: #ff5252;
-
-    font-size: 12px;
-    font-weight: normal;
-
-    margin-top: 4px;
+.warning{
+    color:#e53935;
+    font-size:12px;
+    margin-top:5px;
 }
 
 
@@ -376,103 +273,84 @@ h1 {
    PAPELERA
 ========================================= */
 
-.delete {
-    position: absolute;
+.delete{
+    position:absolute;
+    right:10px;
+    top:50%;
+    transform:translateY(-50%);
 
-    right: 8px;
-    top: 8px;
+    background:#e53935;
+    color:white;
 
-    width: 30px;
-    height: 30px;
+    width:auto;
+    padding:10px 12px;
 
-    border: none;
-    border-radius: 5px;
-
-    background: #c62828;
-
-    color: #ffffff;
-
-    cursor: pointer;
-
-    font-size: 15px;
-
-    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+    margin:0;
 }
 
-.delete:hover {
-    background: #e53935;
-}
-
-.delete:active {
-    background: #b71c1c;
-
-    transform: scale(0.96);
+.delete:hover{
+    background:#f44336;
 }
 
 
 /* =========================================
-   BARRA FIJA DE COMBATE
+   BARRA FIJA
 ========================================= */
 
-#combatBtns {
-    position: fixed;
+#combatBtns{
+    position:fixed;
 
-    left: 0;
-    right: 0;
-    bottom: 0;
+    bottom:0;
+    left:0;
+    right:0;
 
-    z-index: 1000;
+    z-index:1000;
 
-    width: 100%;
+    background:#121212;
 
-    background: rgba(20, 21, 25, 0.97);
+    padding:10px;
 
-    border-top: 1px solid #3b3e47;
+    display:flex;
+    flex-direction:row;
 
-    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
+    gap:8px;
 
-    box-shadow:
-        0 -4px 14px rgba(0, 0, 0, 0.45);
+    border-top:2px solid #333;
+
+    padding-bottom:calc(
+        10px + env(safe-area-inset-bottom)
+    );
 }
 
-.botones-principales {
-    width: 100%;
-    max-width: 500px;
 
-    margin: 0 auto;
+/*
+   Contenedor interno de los tres botones.
+   Mantiene el ancho máximo de la aplicación.
+*/
 
-    display: flex;
+.botones-principales{
+    width:100%;
+    max-width:500px;
 
-    gap: 6px;
+    margin:auto;
+
+    display:flex;
+    flex-direction:row;
+
+    gap:8px;
 }
 
-.botones-principales button {
-    flex: 1;
 
-    min-width: 0;
+#combatBtns button{
+    flex:1;
 
-    height: 42px;
+    font-size:14px;
 
-    border: none;
-    border-radius: 7px;
+    padding:12px 6px;
 
-    color: #ffffff;
+    margin:0;
 
-    font-size: 13px;
-    font-weight: bold;
-
-    cursor: pointer;
-
-    box-shadow:
-        0 2px 4px rgba(0, 0, 0, 0.35);
-
-    transition:
-        background 0.12s,
-        transform 0.08s;
-}
-
-.botones-principales button:active {
-    transform: translateY(1px);
+    min-height:52px;
 }
 
 
@@ -480,12 +358,13 @@ h1 {
    ORDENAR - AMARILLO
 ========================================= */
 
-.ordenar {
-    background: #d39e00;
+.combat.ordenar{
+    background:#f9a825;
+    color:#111;
 }
 
-.ordenar:hover {
-    background: #e5ad00;
+.combat.ordenar:hover{
+    background:#ffb300;
 }
 
 
@@ -493,12 +372,13 @@ h1 {
    INICIAR - AZUL
 ========================================= */
 
-.iniciar {
-    background: #1976d2;
+.combat.iniciar{
+    background:#1e88e5;
+    color:white;
 }
 
-.iniciar:hover {
-    background: #2196f3;
+.combat.iniciar:hover{
+    background:#2196f3;
 }
 
 
@@ -506,12 +386,13 @@ h1 {
    FINALIZAR - ROJO
 ========================================= */
 
-.iniciar.activo {
-    background: #c62828;
+.combat.iniciar.activo{
+    background:#e53935 !important;
+    color:white;
 }
 
-.iniciar.activo:hover {
-    background: #e53935;
+.combat.iniciar.activo:hover{
+    background:#f44336 !important;
 }
 
 
@@ -519,50 +400,50 @@ h1 {
    SIGUIENTE TURNO - MORADO
 ========================================= */
 
-.siguiente {
-    background: #7b1fa2;
+.combat.siguiente{
+    background:#6a1b9a;
+    color:white;
 }
 
-.siguiente:hover {
-    background: #9c27b0;
+.combat.siguiente:hover{
+    background:#7b1fa2;
+}
+
+
+/* =========================================
+   TURNO ACTIVO
+========================================= */
+
+.activoTurno{
+    color:#e53935;
+    font-weight:bold;
 }
 
 
 /* =========================================
    COMBATE NUEVO
-   NO ES FIJO
 ========================================= */
 
-.apartado-combate-nuevo {
-    margin-top: 18px;
+.apartado-combate-nuevo{
+    margin-top:20px;
+    padding-top:10px;
 
-    padding-top: 12px;
-
-    border-top: 1px solid #3a3d46;
+    border-top:1px solid #333;
 }
 
-.nuevo {
-    width: 100%;
+.combat.nuevo{
+    width:100%;
 
-    height: 40px;
+    background:#333;
+    color:white;
 
-    border: none;
-    border-radius: 6px;
+    padding:12px;
 
-    background: #34373f;
-
-    color: #eeeeee;
-
-    font-size: 14px;
-    font-weight: bold;
-
-    cursor: pointer;
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+    margin:0;
 }
 
-.nuevo:hover {
-    background: #444852;
+.combat.nuevo:hover{
+    background:#444;
 }
 
 
@@ -570,26 +451,22 @@ h1 {
    HISTÓRICO
 ========================================= */
 
-#historico {
-    margin-top: 18px;
+#historico{
+    margin-top:20px;
 
-    padding-top: 15px;
+    padding-top:10px;
 
-    border-top: 1px solid #3a3d46;
+    border-top:1px solid #333;
 }
 
-#historico h2 {
-    font-size: 17px;
-
-    margin: 0 0 10px;
-
-    color: #d6d8dd;
+#historico h2{
+    font-size:18px;
+    margin:0 0 10px;
 }
 
-.sin-historico {
-    color: #777d87;
-
-    font-size: 13px;
+.sin-historico{
+    color:#777;
+    font-size:14px;
 }
 
 
@@ -597,84 +474,90 @@ h1 {
    ELEMENTOS DEL HISTÓRICO
 ========================================= */
 
-#historico details {
-    background: #202228;
+#historico details{
+    background:#1f1f1f;
 
-    border: 1px solid #3a3d46;
-    border-radius: 7px;
+    border-radius:8px;
 
-    margin-bottom: 6px;
+    margin-bottom:7px;
 
-    overflow: hidden;
+    overflow:hidden;
 }
 
-#historico summary {
-    cursor: pointer;
+#historico summary{
+    padding:12px;
 
-    padding: 9px;
+    cursor:pointer;
 
-    color: #d8d9dd;
-
-    font-size: 14px;
-    font-weight: bold;
+    font-size:15px;
+    font-weight:bold;
 }
 
-#historico summary:hover {
-    color: #ffffff;
+.historico-ronda{
+    border-top:1px solid #333;
+
+    padding:5px 12px 10px;
 }
 
-.historico-ronda {
-    border-top: 1px solid #3a3d46;
+.historico-personaje{
+    display:flex;
 
-    padding: 5px 9px 8px;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:5px 0;
+
+    font-size:14px;
+
+    color:#ccc;
 }
 
-.historico-personaje {
-    display: flex;
-
-    justify-content: space-between;
-    align-items: center;
-
-    padding: 5px 0;
-
-    font-size: 13px;
-
-    color: #b7bac2;
-}
-
-.historico-personaje strong {
-    color: #ffffff;
+.historico-personaje strong{
+    color:white;
 }
 
 
 /* =========================================
-   MÓVILES PEQUEÑOS
+   MÓVILES
 ========================================= */
 
-@media (max-width: 380px) {
+@media(max-width:380px){
 
-    .app {
-        padding-left: 10px;
-        padding-right: 10px;
-        padding-bottom: 100px;
+    .app{
+        padding:15px;
+        padding-bottom:105px;
     }
 
-    h1 {
-        font-size: 21px;
+    h1{
+        font-size:22px;
     }
 
-    .botones-principales {
-        gap: 4px;
+    #combatBtns{
+        padding:8px;
+        padding-bottom:calc(
+            8px + env(safe-area-inset-bottom)
+        );
     }
 
-    .botones-principales button {
-        height: 40px;
-
-        font-size: 11px;
+    .botones-principales{
+        gap:5px;
     }
 
-    .dado-linea input {
-        width: 75px;
+    #combatBtns button{
+        min-height:56px;
+
+        padding:10px 3px;
+
+        font-size:13px;
     }
+
+    .card{
+        padding:11px;
+    }
+
+    .dado-linea input{
+        width:90px;
+    }
+
 }
 ```
