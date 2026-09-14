@@ -3,29 +3,27 @@ let personajes =
         localStorage.getItem("personajes")
     ) || [];
 
-
 let modoCombate = false;
-
-
 let turnoActual = 0;
 
+/*
+    Indica si los valores han sido calculados
+    mediante el botón "Ordenar".
+
+    Esto permite ver los totales antes de
+    iniciar el combate.
+*/
+let valoresOrdenados = false;
 
 let rondaActual =
     parseInt(
         localStorage.getItem("rondaActual")
     ) || 1;
 
-
 let historico =
     JSON.parse(
         localStorage.getItem("historicoCombate")
     ) || [];
-
-
-
-/* ==================================================
-   ORDEN DE PREPARACIÓN
-================================================== */
 
 const protagonistas = [
     "PLATA",
@@ -36,11 +34,6 @@ const protagonistas = [
 ];
 
 
-
-/* ==================================================
-   GUARDAR
-================================================== */
-
 function save() {
 
     localStorage.setItem(
@@ -48,12 +41,10 @@ function save() {
         JSON.stringify(personajes)
     );
 
-
     localStorage.setItem(
         "rondaActual",
         String(rondaActual)
     );
-
 
     localStorage.setItem(
         "historicoCombate",
@@ -61,11 +52,6 @@ function save() {
     );
 }
 
-
-
-/* ==================================================
-   OBTENER INICIATIVAS
-================================================== */
 
 function obtenerIniciativas(p) {
 
@@ -77,7 +63,6 @@ function obtenerIniciativas(p) {
         return p.iniciativas;
     }
 
-
     if (
         typeof p.ini !== "undefined"
     ) {
@@ -87,27 +72,19 @@ function obtenerIniciativas(p) {
         ];
     }
 
-
     return [0];
 }
 
-
-
-/* ==================================================
-   INICIATIVA SELECCIONADA
-================================================== */
 
 function iniciativaSeleccionada(p) {
 
     const iniciativas =
         obtenerIniciativas(p);
 
-
     let indice =
         Number(
             p.iniciativaSeleccionada
         );
-
 
     if (
         !Number.isInteger(indice) ||
@@ -118,7 +95,6 @@ function iniciativaSeleccionada(p) {
         indice = 0;
     }
 
-
     return (
         Number(
             iniciativas[indice]
@@ -126,11 +102,6 @@ function iniciativaSeleccionada(p) {
     );
 }
 
-
-
-/* ==================================================
-   CALCULAR TOTAL
-================================================== */
 
 function calcularTotal(p) {
 
@@ -140,20 +111,6 @@ function calcularTotal(p) {
     );
 }
 
-
-
-/* ==================================================
-   ORDEN DE PREPARACIÓN
-==================================================
-
-   1. Nombres con números
-   2. PLATA
-   3. MARAVI
-   4. MARTINA
-   5. TAKESHI
-   6. IMME
-   7. Resto alfabéticamente
-================================================== */
 
 function ordenarPreparacion(lista) {
 
@@ -167,7 +124,6 @@ function ordenarPreparacion(lista) {
                 .trim()
                 .toUpperCase();
 
-
             const B =
                 String(
                     b.nombre || ""
@@ -178,21 +134,12 @@ function ordenarPreparacion(lista) {
 
             function rango(nombre) {
 
-                /*
-                   NOMBRES CON NÚMEROS
-                */
-
                 if (
                     /\d/.test(nombre)
                 ) {
 
                     return 0;
                 }
-
-
-                /*
-                   PERSONAJES
-                */
 
                 if (
                     nombre === "PLATA"
@@ -201,14 +148,12 @@ function ordenarPreparacion(lista) {
                     return 1;
                 }
 
-
                 if (
                     nombre === "MARAVI"
                 ) {
 
                     return 2;
                 }
-
 
                 if (
                     nombre === "MARTINA"
@@ -217,14 +162,12 @@ function ordenarPreparacion(lista) {
                     return 3;
                 }
 
-
                 if (
                     nombre === "TAKESHI"
                 ) {
 
                     return 4;
                 }
-
 
                 if (
                     nombre === "IMME"
@@ -233,18 +176,12 @@ function ordenarPreparacion(lista) {
                     return 5;
                 }
 
-
-                /*
-                   OTROS
-                */
-
                 return 6;
             }
 
 
             const rangoA =
                 rango(A);
-
 
             const rangoB =
                 rango(B);
@@ -267,11 +204,6 @@ function ordenarPreparacion(lista) {
 }
 
 
-
-/* ==================================================
-   ORDEN DE COMBATE
-================================================== */
-
 function ordenarCombate(lista) {
 
     return [...lista].sort(
@@ -286,11 +218,6 @@ function ordenarCombate(lista) {
 }
 
 
-
-/* ==================================================
-   CAMBIAR INICIATIVA
-================================================== */
-
 function cambiarIniciativa(
     nombre,
     indice
@@ -302,9 +229,7 @@ function cambiarIniciativa(
                 personaje.nombre === nombre
         );
 
-
     if (!p) {
-
         return;
     }
 
@@ -314,9 +239,11 @@ function cambiarIniciativa(
 
 
     /*
-       Guardamos la selección.
+        Si todavía no hemos pulsado Ordenar,
+        no mostramos/cambiamos el total.
 
-       No ordenamos aquí.
+        Si ya habíamos ordenado, el total se
+        actualizará al volver a pulsar Ordenar.
     */
 
     save();
@@ -324,11 +251,6 @@ function cambiarIniciativa(
     render();
 }
 
-
-
-/* ==================================================
-   CAMBIAR DADO
-================================================== */
 
 function cambiarDado(
     nombre,
@@ -341,9 +263,7 @@ function cambiarDado(
                 personaje.nombre === nombre
         );
 
-
     if (!p) {
-
         return;
     }
 
@@ -359,31 +279,21 @@ function cambiarDado(
 
 
     /*
-       MUY IMPORTANTE:
+        IMPORTANTE:
+        Aquí NO calculamos el total.
 
-       Aquí NO calculamos el total.
-
-       El total se calcula cuando se pulsa
-       ORDENAR o INICIAR COMBATE.
+        El total se calcula solamente cuando
+        se pulsa "Ordenar" o "Iniciar combate".
     */
+
 
     save();
 }
 
 
-
-/* ==================================================
-   SIGUIENTE INPUT
-================================================== */
-
 function siguienteInput(
     actualId
 ) {
-
-    /*
-       El orden para introducir los dados
-       SIEMPRE es el orden de preparación.
-    */
 
     const ordenPreparacion =
         ordenarPreparacion(
@@ -415,10 +325,6 @@ function siguienteInput(
     }
 
 
-    /*
-       Guardar el valor actual.
-    */
-
     const actual =
         document.getElementById(
             actualId
@@ -446,10 +352,6 @@ function siguienteInput(
     }
 
 
-    /*
-       Buscar siguiente.
-    */
-
     const siguienteId =
         ids[
             posicion + 1
@@ -466,13 +368,7 @@ function siguienteInput(
 
         if (siguiente) {
 
-            /*
-               Evita que se escriba sobre
-               el 0 que se muestra internamente.
-            */
-
             siguiente.value = "";
-
 
             setTimeout(
                 () => {
@@ -485,13 +381,6 @@ function siguienteInput(
         }
 
     } else {
-
-        /*
-           Último personaje.
-
-           No iniciamos el combate.
-           El usuario pulsa Ordenar.
-        */
 
         if (
             document.activeElement &&
@@ -508,11 +397,6 @@ function siguienteInput(
 }
 
 
-
-/* ==================================================
-   RENDER
-================================================== */
-
 function render() {
 
     const lista =
@@ -522,7 +406,6 @@ function render() {
 
 
     if (!lista) {
-
         return;
     }
 
@@ -531,15 +414,12 @@ function render() {
 
 
     /*
-       =============================================
-       ORDEN DE LA LISTA
-       =============================================
+        Durante combate:
+        ordenar por total.
 
-       Preparación:
-       números → personajes → otros
-
-       Combate:
-       total descendente
+        Fuera de combate:
+        mantener el orden de preparación,
+        salvo que acabemos de pulsar Ordenar.
     */
 
     if (modoCombate) {
@@ -551,17 +431,22 @@ function render() {
 
     } else {
 
-        personajes =
-            ordenarPreparacion(
-                personajes
-            );
+        if (valoresOrdenados) {
+
+            personajes =
+                ordenarCombate(
+                    personajes
+                );
+
+        } else {
+
+            personajes =
+                ordenarPreparacion(
+                    personajes
+                );
+        }
     }
 
-
-
-    /* ==================================================
-       ADVERTENCIAS
-    ================================================== */
 
     personajes.forEach(
         p => {
@@ -571,7 +456,15 @@ function render() {
     );
 
 
-    if (modoCombate) {
+    /*
+        Las advertencias se calculan cuando
+        estamos viendo los resultados ordenados.
+    */
+
+    if (
+        modoCombate ||
+        valoresOrdenados
+    ) {
 
         for (
             let j = 0;
@@ -613,17 +506,8 @@ function render() {
     }
 
 
-
-    /* ==================================================
-       CREAR TARJETAS
-    ================================================== */
-
     personajes.forEach(
         (p, i) => {
-
-            /*
-               Marcador de turno activo.
-            */
 
             const activo =
                 modoCombate &&
@@ -642,17 +526,9 @@ function render() {
                 nombreOriginal;
 
 
-            /*
-               Color por tipo de personaje.
-            */
-
             let color =
                 "#ff9800";
 
-
-            /*
-               ALIADO
-            */
 
             if (
                 nombreOriginal
@@ -671,12 +547,8 @@ function render() {
                         /^ALIADO\s+/i,
                         ""
                     );
+
             }
-
-
-            /*
-               PROTAGONISTAS
-            */
 
             else if (
                 protagonistas.includes(
@@ -690,20 +562,11 @@ function render() {
             }
 
 
-            /*
-               ID para el input.
-            */
-
             const idSeguro =
                 encodeURIComponent(
                     nombreOriginal
                 );
 
-
-
-            /* ======================================
-               INICIATIVAS
-            ====================================== */
 
             const iniciativas =
                 obtenerIniciativas(p);
@@ -731,10 +594,6 @@ function render() {
             let iniciativasHTML =
                 "";
 
-
-            /*
-               VARIAS INICIATIVAS
-            */
 
             if (
                 iniciativas.length > 1
@@ -764,9 +623,7 @@ function render() {
 
                                     <button
                                         type="button"
-
                                         class="boton-iniciativa ${seleccionada}"
-
                                         onclick="
                                             cambiarIniciativa(
                                                 '${nombreOriginal.replace(/'/g, "\\'")}',
@@ -774,7 +631,6 @@ function render() {
                                             )
                                         "
                                     >
-
                                         <strong>
                                             ${letra}
                                         </strong>
@@ -795,10 +651,6 @@ function render() {
 
             }
 
-            /*
-               UNA SOLA INICIATIVA
-            */
-
             else {
 
                 iniciativasHTML = `
@@ -806,7 +658,6 @@ function render() {
                     <div class="iniciativa-unica">
 
                         Iniciativa:
-
                         <strong>
                             ${iniciativas[0]}
                         </strong>
@@ -817,16 +668,19 @@ function render() {
             }
 
 
-
-            /* ======================================
-               TOTAL
-            ====================================== */
+            /*
+                AHORA EL TOTAL SE MUESTRA
+                TAMBIÉN DESPUÉS DE PULSAR ORDENAR.
+            */
 
             let totalHTML =
                 "";
 
 
-            if (modoCombate) {
+            if (
+                modoCombate ||
+                valoresOrdenados
+            ) {
 
                 totalHTML = `
 
@@ -834,27 +688,21 @@ function render() {
                         id="total-${idSeguro}"
                         class="total-linea"
                     >
-
                         Total:
                         ${p.total}
-
                     </div>
 
                 `;
             }
 
 
-
-            /* ======================================
-               ADVERTENCIA
-            ====================================== */
-
             let warningHTML =
                 "";
 
 
             if (
-                modoCombate &&
+                (modoCombate ||
+                valoresOrdenados) &&
                 p.warning &&
                 p.warning.length > 0
             ) {
@@ -871,26 +719,11 @@ function render() {
             }
 
 
-
-            /* ======================================
-               DADO
-            ====================================== */
-
-            /*
-               Si el dado es 0, el campo aparece
-               vacío.
-            */
-
             const valorDado =
                 Number(p.dado) === 0
                     ? ""
                     : p.dado;
 
-
-
-            /* ======================================
-               TARJETA
-            ====================================== */
 
             lista.innerHTML += `
 
@@ -900,9 +733,7 @@ function render() {
                         class="nombre-personaje"
                         style="color:${color}"
                     >
-
                         ${activo}${nombreMostrar}
-
                     </b>
 
 
@@ -918,9 +749,7 @@ function render() {
 
                         <input
                             type="number"
-
                             id="dado-${idSeguro}"
-
                             value="${valorDado}"
 
                             oninput="
@@ -957,9 +786,7 @@ function render() {
                             )
                         "
                     >
-
                         🗑️
-
                     </button>
 
                 </div>
@@ -979,11 +806,6 @@ function render() {
 }
 
 
-
-/* ==================================================
-   BOTÓN INICIAR / FINALIZAR
-================================================== */
-
 function actualizarBotonCombate() {
 
     const boton =
@@ -993,7 +815,6 @@ function actualizarBotonCombate() {
 
 
     if (!boton) {
-
         return;
     }
 
@@ -1021,11 +842,6 @@ function actualizarBotonCombate() {
 }
 
 
-
-/* ==================================================
-   RONDA
-================================================== */
-
 function actualizarRonda() {
 
     const elemento =
@@ -1035,7 +851,6 @@ function actualizarRonda() {
 
 
     if (!elemento) {
-
         return;
     }
 
@@ -1044,11 +859,6 @@ function actualizarRonda() {
         `⚔ Ronda ${rondaActual}`;
 }
 
-
-
-/* ==================================================
-   AÑADIR PERSONAJE
-================================================== */
 
 function addPersonaje() {
 
@@ -1059,7 +869,6 @@ function addPersonaje() {
 
 
     if (!nombreInput) {
-
         return;
     }
 
@@ -1099,7 +908,6 @@ function addPersonaje() {
 
 
             if (!input) {
-
                 return;
             }
 
@@ -1121,11 +929,6 @@ function addPersonaje() {
         }
     );
 
-
-    /*
-       Si no se introduce ninguna,
-       usamos 0.
-    */
 
     if (
         iniciativas.length === 0
@@ -1158,18 +961,12 @@ function addPersonaje() {
     });
 
 
-    /*
-       Añadir personaje vuelve a preparación.
-    */
-
     modoCombate = false;
+
+    valoresOrdenados = false;
 
     turnoActual = 0;
 
-
-    /*
-       Limpiar formulario.
-    */
 
     nombreInput.value = "";
 
@@ -1195,15 +992,9 @@ function addPersonaje() {
 
     render();
 
-
     nombreInput.focus();
 }
 
-
-
-/* ==================================================
-   BORRAR
-================================================== */
 
 function borrar(nombre) {
 
@@ -1250,11 +1041,6 @@ function borrar(nombre) {
 }
 
 
-
-/* ==================================================
-   ORDENAR
-================================================== */
-
 function ordenar() {
 
     if (
@@ -1266,7 +1052,8 @@ function ordenar() {
 
 
     /*
-       1. Recuperar orden de preparación.
+        Primero recuperamos el orden de preparación
+        para leer correctamente los dados.
     */
 
     const preparacion =
@@ -1276,7 +1063,10 @@ function ordenar() {
 
 
     /*
-       2. Recoger los dados.
+        AQUÍ SE CALCULAN LOS TOTALES.
+
+        No se calculan al escribir el dado.
+        Solo al pulsar "Ordenar".
     */
 
     preparacion.forEach(
@@ -1306,10 +1096,6 @@ function ordenar() {
             }
 
 
-            /*
-               3. AQUÍ se calcula el total.
-            */
-
             p.total =
                 calcularTotal(p);
         }
@@ -1317,7 +1103,7 @@ function ordenar() {
 
 
     /*
-       4. AHORA se ordenan por total.
+        Ordenamos por total descendente.
     */
 
     personajes =
@@ -1326,14 +1112,20 @@ function ordenar() {
         );
 
 
-    turnoActual = 0;
-
-
     /*
-       Todavía no hemos iniciado combate.
+        IMPORTANTE:
+
+        Todavía NO estamos en combate.
+
+        Simplemente mostramos los resultados
+        calculados para poder comprobarlos.
     */
 
+    valoresOrdenados = true;
+
     modoCombate = false;
+
+    turnoActual = 0;
 
 
     save();
@@ -1341,11 +1133,6 @@ function ordenar() {
     render();
 }
 
-
-
-/* ==================================================
-   INICIAR / FINALIZAR COMBATE
-================================================== */
 
 function iniciarCombate() {
 
@@ -1357,16 +1144,16 @@ function iniciarCombate() {
     }
 
 
-
-    /* ==============================================
-       INICIAR COMBATE
-    ============================================== */
+    /*
+        INICIAR COMBATE
+    */
 
     if (!modoCombate) {
 
         /*
-           Primero recuperamos el orden
-           de preparación.
+            Volvemos al orden de preparación
+            para recoger los valores actuales
+            de los campos de dado.
         */
 
         const preparacion =
@@ -1376,7 +1163,8 @@ function iniciarCombate() {
 
 
         /*
-           Recoger dados y calcular.
+            Calculamos de nuevo los totales
+            al iniciar.
         */
 
         preparacion.forEach(
@@ -1412,21 +1200,15 @@ function iniciarCombate() {
         );
 
 
-        /*
-           Ordenar por total.
-        */
-
         personajes =
             ordenarCombate(
                 preparacion
             );
 
 
-        /*
-           Entramos en combate.
-        */
-
         modoCombate = true;
+
+        valoresOrdenados = true;
 
         turnoActual = 0;
 
@@ -1439,14 +1221,10 @@ function iniciarCombate() {
     }
 
 
-
-    /* ==============================================
-       FINALIZAR RONDA
-    ============================================== */
-
     /*
-       Guardamos los resultados
-       de la ronda actual.
+        FINALIZAR COMBATE
+
+        Guardamos los resultados de la ronda.
     */
 
     historico.push({
@@ -1471,26 +1249,17 @@ function iniciarCombate() {
     });
 
 
-    /*
-       Pasamos a la siguiente ronda.
-    */
-
     rondaActual++;
 
 
     /*
-       Reiniciar dados.
+        Reiniciamos los dados.
     */
 
     personajes.forEach(
         p => {
 
             p.dado = 0;
-
-            /*
-               Conservamos la iniciativa
-               que estuviera seleccionada.
-            */
 
             p.total =
                 iniciativaSeleccionada(p);
@@ -1501,23 +1270,9 @@ function iniciarCombate() {
 
 
     /*
-       ============================================
-       VOLVER A PREPARACIÓN
-       ============================================
-
-       Números
-       ↓
-       PLATA
-       ↓
-       MARAVI
-       ↓
-       MARTINA
-       ↓
-       TAKESHI
-       ↓
-       IMME
-       ↓
-       Otros
+        Volvemos al orden de preparación
+        para introducir los dados de la
+        siguiente ronda.
     */
 
     personajes =
@@ -1526,14 +1281,9 @@ function iniciarCombate() {
         );
 
 
-    /*
-       Dejamos de estar en combate.
-
-       Los tres botones siguen estando
-       abajo porque la barra es fija.
-    */
-
     modoCombate = false;
+
+    valoresOrdenados = false;
 
     turnoActual = 0;
 
@@ -1544,19 +1294,9 @@ function iniciarCombate() {
 }
 
 
-
-/* ==================================================
-   SIGUIENTE TURNO
-================================================== */
-
 function siguienteTurno() {
 
-    /*
-       Solo funciona durante el combate.
-    */
-
     if (!modoCombate) {
-
         return;
     }
 
@@ -1585,16 +1325,7 @@ function siguienteTurno() {
 }
 
 
-
-/* ==================================================
-   COMBATE NUEVO
-================================================== */
-
 function nuevoCombate() {
-
-    /*
-       Protección contra pulsaciones accidentales.
-    */
 
     const confirmar =
         confirm(
@@ -1603,37 +1334,20 @@ function nuevoCombate() {
 
 
     if (!confirmar) {
-
         return;
     }
 
 
-    /*
-       Reiniciar ronda.
-    */
-
     rondaActual = 1;
-
-
-    /*
-       Borrar histórico.
-    */
 
     historico = [];
 
-
-    /*
-       Salir de combate.
-    */
-
     modoCombate = false;
+
+    valoresOrdenados = false;
 
     turnoActual = 0;
 
-
-    /*
-       Reiniciar dados e iniciativas.
-    */
 
     personajes.forEach(
         p => {
@@ -1651,10 +1365,6 @@ function nuevoCombate() {
     );
 
 
-    /*
-       Orden de preparación.
-    */
-
     personajes =
         ordenarPreparacion(
             personajes
@@ -1667,11 +1377,6 @@ function nuevoCombate() {
 }
 
 
-
-/* ==================================================
-   HISTÓRICO
-================================================== */
-
 function renderHistorico() {
 
     const contenedor =
@@ -1681,7 +1386,6 @@ function renderHistorico() {
 
 
     if (!contenedor) {
-
         return;
     }
 
@@ -1693,9 +1397,7 @@ function renderHistorico() {
         contenedor.innerHTML = `
 
             <p class="sin-historico">
-
                 Todavía no hay rondas registradas.
-
             </p>
 
         `;
@@ -1706,10 +1408,6 @@ function renderHistorico() {
 
     contenedor.innerHTML = "";
 
-
-    /*
-       La ronda más reciente aparece primero.
-    */
 
     [...historico]
         .reverse()
@@ -1794,11 +1492,6 @@ function renderHistorico() {
 }
 
 
-
-/* ==================================================
-   CERRAR TECLADO
-================================================== */
-
 document.addEventListener(
     "click",
     function(event) {
@@ -1819,10 +1512,5 @@ document.addEventListener(
     }
 );
 
-
-
-/* ==================================================
-   INICIAR
-================================================== */
 
 render();
