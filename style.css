@@ -1,7 +1,7 @@
+```css
 * {
     box-sizing: border-box;
 }
-
 
 html,
 body {
@@ -9,14 +9,12 @@ body {
     padding: 0;
 }
 
-
 body {
-    background: #111;
-    color: #eee;
-    font-family: Arial, sans-serif;
+    background: #101114;
+    color: #eeeeee;
+    font-family: Arial, Helvetica, sans-serif;
     min-height: 100vh;
 }
-
 
 .app {
     width: 100%;
@@ -24,153 +22,164 @@ body {
     margin: 0 auto;
 
     padding: 15px;
-
-    /*
-       Espacio para que la barra fija
-       no tape el contenido.
-    */
-    padding-bottom: 95px;
+    padding-bottom: 105px;
 }
 
+/* =========================================
+   TÍTULO
+========================================= */
 
 h1 {
     text-align: center;
-
     margin: 5px 0 18px;
 
     font-size: 24px;
+    color: #ffffff;
 
-    color: #f0f0f0;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 
 /* =========================================
-   PANEL SUPERIOR
+   PANEL PARA AÑADIR
 ========================================= */
 
 .panel {
-    background: #1d1d1d;
+    background: #202228;
 
-    border: 1px solid #333;
-
+    border: 1px solid #3a3d46;
     border-radius: 10px;
 
     padding: 12px;
-
     margin-bottom: 8px;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 
-.panel > input {
-    width: 100%;
+/* =========================================
+   CAMPOS BLANCOS
+========================================= */
 
-    height: 40px;
+.panel > input,
+.ini-input input,
+.dado-linea input {
+    background: #ffffff;
 
-    background: #292929;
+    color: #111111;
 
-    border: 1px solid #444;
-
+    border: 1px solid #bbbbbb;
     border-radius: 6px;
 
-    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-    padding: 8px;
+.panel > input {
+    width: 100%;
+    height: 40px;
+
+    padding: 8px 10px;
 
     font-size: 16px;
 
     margin-bottom: 10px;
 }
 
-
 .panel > input::placeholder,
-.ini-input input::placeholder {
-    color: #777;
+.ini-input input::placeholder,
+.dado-linea input::placeholder {
+    color: #777777;
 }
 
+
+/* =========================================
+   INICIATIVAS
+========================================= */
 
 .iniciativas-panel {
     margin-bottom: 10px;
 }
 
-
 .iniciativas-titulo {
     font-size: 13px;
-
-    color: #aaa;
+    color: #bfc3cc;
 
     margin-bottom: 6px;
 }
 
-
 .iniciativa-inputs {
     display: flex;
-
     gap: 5px;
 }
 
-
 .ini-input {
     flex: 1;
-
     min-width: 0;
 
     display: flex;
-
     align-items: center;
 
     gap: 3px;
 }
 
-
 .ini-input span {
     font-size: 12px;
+    font-weight: bold;
 
-    color: #aaa;
+    color: #c8cbd2;
 }
-
 
 .ini-input input {
     width: 100%;
-
     min-width: 0;
 
     height: 34px;
 
-    background: #292929;
-
-    border: 1px solid #444;
-
-    border-radius: 5px;
-
-    color: white;
-
-    padding: 5px;
+    padding: 5px 6px;
 
     font-size: 14px;
 }
 
+.ini-input input:focus,
+.panel > input:focus,
+.dado-linea input:focus {
+    outline: none;
 
-.panel > button {
-    width: 100%;
+    border-color: #4da3ff;
 
-    height: 38px;
-
-    border: none;
-
-    border-radius: 6px;
-
-    background: #444;
-
-    color: white;
-
-    font-size: 15px;
-
-    cursor: pointer;
+    box-shadow: 0 0 0 2px rgba(77, 163, 255, 0.18);
 }
 
 
+/* =========================================
+   AÑADIR
+========================================= */
+
+.panel > button {
+    width: 100%;
+    height: 40px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: #2e8b57;
+
+    color: #ffffff;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.25);
+}
+
 .panel > button:hover {
-    background: #555;
+    background: #35a565;
+}
+
+.panel > button:active {
+    transform: translateY(1px);
 }
 
 
@@ -181,67 +190,50 @@ h1 {
 .ronda-indicador {
     color: #4da3ff;
 
-    background: none;
-
+    background: transparent;
     border: none;
 
     padding: 0;
-
     margin: 10px 3px 8px;
 
     font-size: 14px;
-
     font-weight: bold;
 }
 
 
 /* =========================================
-   TARJETAS
+   TARJETAS DE PERSONAJES
 ========================================= */
 
 .card {
     position: relative;
 
-    background: #1d1d1d;
+    background: #202228;
 
-    border: 1px solid #333;
-
+    border: 1px solid #3a3d46;
     border-radius: 9px;
 
     padding: 10px;
 
     margin-bottom: 7px;
 
-    transition: border-color 0.15s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
-
 
 .card:hover {
-    border-color: #444;
+    border-color: #4a4e59;
 }
-
 
 .nombre-personaje {
     display: block;
 
     font-size: 17px;
+    font-weight: bold;
 
     margin-bottom: 7px;
 
-    padding-right: 35px;
+    padding-right: 38px;
 }
-
-
-/*
-   Protagonistas:
-   blanco
-
-   Aliados:
-   verde
-
-   Resto:
-   naranja
-*/
 
 
 /* =========================================
@@ -249,21 +241,20 @@ h1 {
 ========================================= */
 
 .iniciativa-unica {
-    color: #aaa;
+    color: #b8bbc3;
 
     font-size: 13px;
 
     margin-bottom: 7px;
 }
 
-
 .iniciativa-unica strong {
-    color: #ddd;
+    color: #ffffff;
 }
 
 
 /* =========================================
-   MULTI-INICIATIVA
+   SELECTOR DE INICIATIVAS
 ========================================= */
 
 .selector-iniciativas {
@@ -274,7 +265,6 @@ h1 {
     margin-bottom: 8px;
 }
 
-
 .boton-iniciativa {
     flex: 1;
 
@@ -282,43 +272,42 @@ h1 {
 
     height: 32px;
 
-    background: #292929;
+    background: #30333a;
 
-    border: 1px solid #444;
-
+    border: 1px solid #50545d;
     border-radius: 5px;
 
-    color: #bbb;
+    color: #dddddd;
 
     cursor: pointer;
 
     padding: 2px 4px;
 
     font-size: 13px;
-}
 
+    transition: 0.1s;
+}
 
 .boton-iniciativa:hover {
-    background: #333;
+    background: #3a3e46;
 }
-
 
 .boton-iniciativa strong {
     margin-right: 2px;
 }
 
-
 .boton-iniciativa.seleccionada {
-    background: #d69e00;
+    background: #e0a800;
 
-    border-color: #e6b800;
+    border-color: #ffc107;
 
-    color: #111;
+    color: #111111;
+
+    font-weight: bold;
 }
 
-
 .boton-iniciativa.seleccionada:hover {
-    background: #e6ad00;
+    background: #f0b400;
 }
 
 
@@ -336,37 +325,22 @@ h1 {
     margin-top: 4px;
 }
 
-
 .dado-linea span {
     font-size: 13px;
 
-    color: #aaa;
+    color: #bfc2c9;
 }
-
 
 .dado-linea input {
     width: 85px;
 
     height: 34px;
 
-    background: #292929;
-
-    border: 1px solid #555;
-
-    border-radius: 5px;
-
-    color: white;
+    padding: 4px 7px;
 
     font-size: 16px;
 
-    padding: 4px 7px;
-}
-
-
-.dado-linea input:focus {
-    outline: none;
-
-    border-color: #4da3ff;
+    font-weight: bold;
 }
 
 
@@ -378,10 +352,9 @@ h1 {
     margin-top: 7px;
 
     font-size: 14px;
-
     font-weight: bold;
 
-    color: #f0f0f0;
+    color: #ffffff;
 }
 
 
@@ -393,7 +366,6 @@ h1 {
     color: #ff5252;
 
     font-size: 12px;
-
     font-weight: normal;
 
     margin-top: 4px;
@@ -401,36 +373,40 @@ h1 {
 
 
 /* =========================================
-   BOTÓN BORRAR
+   PAPELERA
 ========================================= */
 
 .delete {
     position: absolute;
 
     right: 8px;
-
     top: 8px;
 
     width: 30px;
-
     height: 30px;
 
     border: none;
-
     border-radius: 5px;
 
-    background: #292929;
+    background: #c62828;
 
-    color: #aaa;
+    color: #ffffff;
 
     cursor: pointer;
+
+    font-size: 15px;
+
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
 }
 
-
 .delete:hover {
-    background: #3a3a3a;
+    background: #e53935;
+}
 
-    color: #ff5252;
+.delete:active {
+    background: #b71c1c;
+
+    transform: scale(0.96);
 }
 
 
@@ -442,30 +418,25 @@ h1 {
     position: fixed;
 
     left: 0;
-
     right: 0;
-
     bottom: 0;
 
     z-index: 1000;
 
     width: 100%;
 
-    background: #181818;
+    background: rgba(20, 21, 25, 0.97);
 
-    border-top: 1px solid #333;
+    border-top: 1px solid #3b3e47;
 
-    padding: 8px;
+    padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
 
     box-shadow:
-        0 -4px 12px
-        rgba(0, 0, 0, 0.4);
+        0 -4px 14px rgba(0, 0, 0, 0.45);
 }
-
 
 .botones-principales {
     width: 100%;
-
     max-width: 500px;
 
     margin: 0 auto;
@@ -475,7 +446,6 @@ h1 {
     gap: 6px;
 }
 
-
 .botones-principales button {
     flex: 1;
 
@@ -484,73 +454,83 @@ h1 {
     height: 42px;
 
     border: none;
+    border-radius: 7px;
 
-    border-radius: 6px;
-
-    color: white;
+    color: #ffffff;
 
     font-size: 13px;
-
     font-weight: bold;
 
     cursor: pointer;
+
+    box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.35);
+
+    transition:
+        background 0.12s,
+        transform 0.08s;
+}
+
+.botones-principales button:active {
+    transform: translateY(1px);
 }
 
 
 /* =========================================
-   ORDENAR
+   ORDENAR - AMARILLO
 ========================================= */
 
 .ordenar {
-    background: #7b5e00;
+    background: #d39e00;
 }
 
-
 .ordenar:hover {
-    background: #967300;
+    background: #e5ad00;
 }
 
 
 /* =========================================
-   INICIAR
+   INICIAR - AZUL
 ========================================= */
 
 .iniciar {
-    background: #2e7d32;
+    background: #1976d2;
 }
-
 
 .iniciar:hover {
-    background: #388e3c;
-}
-
-
-.iniciar.activo {
-    background: #b71c1c;
-}
-
-
-.iniciar.activo:hover {
-    background: #c62828;
+    background: #2196f3;
 }
 
 
 /* =========================================
-   SIGUIENTE TURNO
+   FINALIZAR - ROJO
 ========================================= */
 
-.siguiente {
-    background: #1565c0;
+.iniciar.activo {
+    background: #c62828;
+}
+
+.iniciar.activo:hover {
+    background: #e53935;
 }
 
 
+/* =========================================
+   SIGUIENTE TURNO - MORADO
+========================================= */
+
+.siguiente {
+    background: #7b1fa2;
+}
+
 .siguiente:hover {
-    background: #1976d2;
+    background: #9c27b0;
 }
 
 
 /* =========================================
    COMBATE NUEVO
+   NO ES FIJO
 ========================================= */
 
 .apartado-combate-nuevo {
@@ -558,9 +538,8 @@ h1 {
 
     padding-top: 12px;
 
-    border-top: 1px solid #333;
+    border-top: 1px solid #3a3d46;
 }
-
 
 .nuevo {
     width: 100%;
@@ -568,25 +547,22 @@ h1 {
     height: 40px;
 
     border: none;
-
     border-radius: 6px;
 
-    background: #292929;
+    background: #34373f;
 
-    color: #ddd;
+    color: #eeeeee;
 
     font-size: 14px;
-
     font-weight: bold;
 
     cursor: pointer;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
 }
 
-
 .nuevo:hover {
-    background: #353535;
-
-    color: white;
+    background: #444852;
 }
 
 
@@ -599,31 +575,32 @@ h1 {
 
     padding-top: 15px;
 
-    border-top: 1px solid #333;
+    border-top: 1px solid #3a3d46;
 }
-
 
 #historico h2 {
     font-size: 17px;
 
     margin: 0 0 10px;
 
-    color: #ccc;
+    color: #d6d8dd;
 }
 
-
 .sin-historico {
-    color: #777;
+    color: #777d87;
 
     font-size: 13px;
 }
 
 
+/* =========================================
+   ELEMENTOS DEL HISTÓRICO
+========================================= */
+
 #historico details {
-    background: #1d1d1d;
+    background: #202228;
 
-    border: 1px solid #333;
-
+    border: 1px solid #3a3d46;
     border-radius: 7px;
 
     margin-bottom: 6px;
@@ -631,49 +608,42 @@ h1 {
     overflow: hidden;
 }
 
-
 #historico summary {
     cursor: pointer;
 
     padding: 9px;
 
-    color: #ccc;
+    color: #d8d9dd;
 
     font-size: 14px;
-
     font-weight: bold;
 }
 
-
 #historico summary:hover {
-    color: white;
+    color: #ffffff;
 }
 
-
 .historico-ronda {
-    border-top: 1px solid #333;
+    border-top: 1px solid #3a3d46;
 
     padding: 5px 9px 8px;
 }
-
 
 .historico-personaje {
     display: flex;
 
     justify-content: space-between;
-
     align-items: center;
 
     padding: 5px 0;
 
     font-size: 13px;
 
-    color: #aaa;
+    color: #b7bac2;
 }
 
-
 .historico-personaje strong {
-    color: #eee;
+    color: #ffffff;
 }
 
 
@@ -685,22 +655,17 @@ h1 {
 
     .app {
         padding-left: 10px;
-
         padding-right: 10px;
-
-        padding-bottom: 95px;
+        padding-bottom: 100px;
     }
-
 
     h1 {
         font-size: 21px;
     }
 
-
     .botones-principales {
         gap: 4px;
     }
-
 
     .botones-principales button {
         height: 40px;
@@ -708,8 +673,8 @@ h1 {
         font-size: 11px;
     }
 
-
     .dado-linea input {
         width: 75px;
     }
 }
+```
