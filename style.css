@@ -22,15 +22,25 @@ body {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
+
     padding: 15px;
-    padding-bottom: 30px;
+
+    /*
+       Espacio para que la barra fija
+       no tape el contenido.
+    */
+    padding-bottom: 95px;
 }
 
 
 h1 {
     text-align: center;
+
     margin: 5px 0 18px;
+
     font-size: 24px;
+
+    color: #f0f0f0;
 }
 
 
@@ -40,19 +50,26 @@ h1 {
 
 .panel {
     background: #1d1d1d;
+
     border: 1px solid #333;
+
     border-radius: 10px;
+
     padding: 12px;
+
     margin-bottom: 8px;
 }
 
 
 .panel > input {
     width: 100%;
+
     height: 40px;
 
     background: #292929;
+
     border: 1px solid #444;
+
     border-radius: 6px;
 
     color: white;
@@ -65,6 +82,12 @@ h1 {
 }
 
 
+.panel > input::placeholder,
+.ini-input input::placeholder {
+    color: #777;
+}
+
+
 .iniciativas-panel {
     margin-bottom: 10px;
 }
@@ -72,13 +95,16 @@ h1 {
 
 .iniciativas-titulo {
     font-size: 13px;
+
     color: #aaa;
+
     margin-bottom: 6px;
 }
 
 
 .iniciativa-inputs {
     display: flex;
+
     gap: 5px;
 }
 
@@ -86,7 +112,10 @@ h1 {
 .ini-input {
     flex: 1;
 
+    min-width: 0;
+
     display: flex;
+
     align-items: center;
 
     gap: 3px;
@@ -95,18 +124,22 @@ h1 {
 
 .ini-input span {
     font-size: 12px;
+
     color: #aaa;
 }
 
 
 .ini-input input {
     width: 100%;
+
     min-width: 0;
 
     height: 34px;
 
     background: #292929;
+
     border: 1px solid #444;
+
     border-radius: 5px;
 
     color: white;
@@ -119,12 +152,15 @@ h1 {
 
 .panel > button {
     width: 100%;
+
     height: 38px;
 
     border: none;
+
     border-radius: 6px;
 
-    background: #333;
+    background: #444;
+
     color: white;
 
     font-size: 15px;
@@ -133,11 +169,8 @@ h1 {
 }
 
 
-.panel > button:active,
-.combat:active,
-.delete:active,
-.boton-iniciativa:active {
-    transform: scale(0.98);
+.panel > button:hover {
+    background: #555;
 }
 
 
@@ -146,16 +179,19 @@ h1 {
 ========================================= */
 
 .ronda-indicador {
-    background: none;
-    border: none;
-
     color: #4da3ff;
 
-    font-size: 14px;
-    font-weight: bold;
+    background: none;
+
+    border: none;
+
+    padding: 0;
 
     margin: 10px 3px 8px;
-    padding: 0;
+
+    font-size: 14px;
+
+    font-weight: bold;
 }
 
 
@@ -169,11 +205,19 @@ h1 {
     background: #1d1d1d;
 
     border: 1px solid #333;
+
     border-radius: 9px;
 
     padding: 10px;
 
     margin-bottom: 7px;
+
+    transition: border-color 0.15s;
+}
+
+
+.card:hover {
+    border-color: #444;
 }
 
 
@@ -187,6 +231,22 @@ h1 {
     padding-right: 35px;
 }
 
+
+/*
+   Protagonistas:
+   blanco
+
+   Aliados:
+   verde
+
+   Resto:
+   naranja
+*/
+
+
+/* =========================================
+   INICIATIVA ÚNICA
+========================================= */
 
 .iniciativa-unica {
     color: #aaa;
@@ -203,7 +263,7 @@ h1 {
 
 
 /* =========================================
-   VARIAS INICIATIVAS
+   MULTI-INICIATIVA
 ========================================= */
 
 .selector-iniciativas {
@@ -225,6 +285,7 @@ h1 {
     background: #292929;
 
     border: 1px solid #444;
+
     border-radius: 5px;
 
     color: #bbb;
@@ -232,6 +293,13 @@ h1 {
     cursor: pointer;
 
     padding: 2px 4px;
+
+    font-size: 13px;
+}
+
+
+.boton-iniciativa:hover {
+    background: #333;
 }
 
 
@@ -246,6 +314,11 @@ h1 {
     border-color: #e6b800;
 
     color: #111;
+}
+
+
+.boton-iniciativa.seleccionada:hover {
+    background: #e6ad00;
 }
 
 
@@ -279,6 +352,7 @@ h1 {
     background: #292929;
 
     border: 1px solid #555;
+
     border-radius: 5px;
 
     color: white;
@@ -286,6 +360,13 @@ h1 {
     font-size: 16px;
 
     padding: 4px 7px;
+}
+
+
+.dado-linea input:focus {
+    outline: none;
+
+    border-color: #4da3ff;
 }
 
 
@@ -299,8 +380,14 @@ h1 {
     font-size: 14px;
 
     font-weight: bold;
+
+    color: #f0f0f0;
 }
 
+
+/* =========================================
+   ADVERTENCIA
+========================================= */
 
 .warning {
     color: #ff5252;
@@ -309,21 +396,23 @@ h1 {
 
     font-weight: normal;
 
-    margin-top: 3px;
+    margin-top: 4px;
 }
 
 
 /* =========================================
-   BORRAR
+   BOTÓN BORRAR
 ========================================= */
 
 .delete {
     position: absolute;
 
     right: 8px;
+
     top: 8px;
 
     width: 30px;
+
     height: 30px;
 
     border: none;
@@ -338,16 +427,49 @@ h1 {
 }
 
 
+.delete:hover {
+    background: #3a3a3a;
+
+    color: #ff5252;
+}
+
+
 /* =========================================
-   BOTONES DE COMBATE
+   BARRA FIJA DE COMBATE
 ========================================= */
 
 #combatBtns {
-    margin-top: 12px;
+    position: fixed;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: 0;
+
+    z-index: 1000;
+
+    width: 100%;
+
+    background: #181818;
+
+    border-top: 1px solid #333;
+
+    padding: 8px;
+
+    box-shadow:
+        0 -4px 12px
+        rgba(0, 0, 0, 0.4);
 }
 
 
 .botones-principales {
+    width: 100%;
+
+    max-width: 500px;
+
+    margin: 0 auto;
+
     display: flex;
 
     gap: 6px;
@@ -359,7 +481,7 @@ h1 {
 
     min-width: 0;
 
-    height: 40px;
+    height: 42px;
 
     border: none;
 
@@ -375,13 +497,31 @@ h1 {
 }
 
 
+/* =========================================
+   ORDENAR
+========================================= */
+
 .ordenar {
-    background: #555;
+    background: #7b5e00;
 }
 
 
+.ordenar:hover {
+    background: #967300;
+}
+
+
+/* =========================================
+   INICIAR
+========================================= */
+
 .iniciar {
     background: #2e7d32;
+}
+
+
+.iniciar:hover {
+    background: #388e3c;
 }
 
 
@@ -390,8 +530,22 @@ h1 {
 }
 
 
+.iniciar.activo:hover {
+    background: #c62828;
+}
+
+
+/* =========================================
+   SIGUIENTE TURNO
+========================================= */
+
 .siguiente {
     background: #1565c0;
+}
+
+
+.siguiente:hover {
+    background: #1976d2;
 }
 
 
@@ -426,6 +580,13 @@ h1 {
     font-weight: bold;
 
     cursor: pointer;
+}
+
+
+.nuevo:hover {
+    background: #353535;
+
+    color: white;
 }
 
 
@@ -466,6 +627,8 @@ h1 {
     border-radius: 7px;
 
     margin-bottom: 6px;
+
+    overflow: hidden;
 }
 
 
@@ -479,6 +642,11 @@ h1 {
     font-size: 14px;
 
     font-weight: bold;
+}
+
+
+#historico summary:hover {
+    color: white;
 }
 
 
@@ -516,9 +684,11 @@ h1 {
 @media (max-width: 380px) {
 
     .app {
-        padding: 10px;
+        padding-left: 10px;
 
-        padding-bottom: 25px;
+        padding-right: 10px;
+
+        padding-bottom: 95px;
     }
 
 
@@ -533,6 +703,8 @@ h1 {
 
 
     .botones-principales button {
+        height: 40px;
+
         font-size: 11px;
     }
 
