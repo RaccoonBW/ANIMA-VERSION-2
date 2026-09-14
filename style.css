@@ -1,4 +1,3 @@
-```css
 /* =========================================
    GENERAL
 ========================================= */
@@ -165,7 +164,7 @@ button{
     font-size:18px;
     font-weight:bold;
 
-    padding-right:40px;
+    padding-right:50px;
     margin-bottom:7px;
 }
 
@@ -192,23 +191,33 @@ button{
 .selector-iniciativas{
     display:flex;
     gap:5px;
-    width:100%;
+
+    /*
+       Dejamos espacio a la derecha
+       para que los botones no choquen
+       con la papelera.
+    */
+    width:calc(100% - 45px);
+
     margin-bottom:5px;
 }
 
 .boton-iniciativa{
     flex:1;
+    min-width:0;
 
-    padding:7px 4px;
+    padding:6px 2px;
     margin:0;
 
-    font-size:13px;
+    font-size:12px;
 
     background:#333;
     color:white;
 
     border:1px solid #555;
     border-radius:7px;
+
+    white-space:nowrap;
 }
 
 .boton-iniciativa:hover{
@@ -275,17 +284,24 @@ button{
 
 .delete{
     position:absolute;
+
     right:10px;
     top:50%;
+
     transform:translateY(-50%);
 
     background:#e53935;
     color:white;
 
-    width:auto;
-    padding:10px 12px;
+    width:38px;
+    height:38px;
 
+    padding:0;
     margin:0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 
 .delete:hover{
@@ -534,6 +550,7 @@ button{
 
     #combatBtns{
         padding:8px;
+
         padding-bottom:calc(
             8px + env(safe-area-inset-bottom)
         );
@@ -559,5 +576,20 @@ button{
         width:90px;
     }
 
+    /*
+       En pantallas pequeñas reducimos un poco
+       más los botones de iniciativa para que
+       A/B/C/D sigan cabiendo cómodamente.
+    */
+
+    .selector-iniciativas{
+        width:calc(100% - 43px);
+        gap:4px;
+    }
+
+    .boton-iniciativa{
+        padding:6px 1px;
+        font-size:11px;
+    }
+
 }
-```
