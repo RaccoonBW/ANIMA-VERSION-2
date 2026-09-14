@@ -1,22 +1,20 @@
-/* ==================================================
-   GENERAL
-================================================== */
-
 * {
     box-sizing: border-box;
 }
+
 
 html,
 body {
     margin: 0;
     padding: 0;
-    width: 100%;
 }
 
+
 body {
+    background: #111;
+    color: #eee;
     font-family: Arial, sans-serif;
-    background: #121212;
-    color: white;
+    min-height: 100vh;
 }
 
 
@@ -24,208 +22,158 @@ body {
     width: 100%;
     max-width: 500px;
     margin: 0 auto;
-
     padding: 15px;
-
-    /*
-       Espacio suficiente para la barra
-       fija inferior de dos filas.
-    */
-    padding-bottom: 135px;
+    padding-bottom: 30px;
 }
 
-
-
-/* ==================================================
-   TÍTULO
-================================================== */
 
 h1 {
     text-align: center;
-
-    font-size: 25px;
-
-    margin:
-        8px 0
-        18px;
+    margin: 5px 0 18px;
+    font-size: 24px;
 }
 
 
-
-/* ==================================================
-   PANEL DE CREACIÓN
-================================================== */
+/* =========================================
+   PANEL SUPERIOR
+========================================= */
 
 .panel {
-    display: flex;
-    flex-direction: column;
-
-    gap: 8px;
-
-    margin-bottom: 14px;
+    background: #1d1d1d;
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 8px;
 }
 
 
 .panel > input {
     width: 100%;
+    height: 40px;
 
-    padding: 11px;
+    background: #292929;
+    border: 1px solid #444;
+    border-radius: 6px;
+
+    color: white;
+
+    padding: 8px;
 
     font-size: 16px;
 
-    border-radius: 8px;
-
-    border: none;
-
-    outline: none;
+    margin-bottom: 10px;
 }
 
 
-
-/* ==================================================
-   INICIATIVAS DE CREACIÓN
-================================================== */
-
 .iniciativas-panel {
-    background: #1b1b1b;
-
-    padding: 9px;
-
-    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
 
 .iniciativas-titulo {
     font-size: 13px;
-
     color: #aaa;
-
-    margin-bottom: 7px;
+    margin-bottom: 6px;
 }
 
 
 .iniciativa-inputs {
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
+    display: flex;
     gap: 5px;
-
-    width: 100%;
 }
 
 
 .ini-input {
-    display: flex;
+    flex: 1;
 
+    display: flex;
     align-items: center;
 
     gap: 3px;
-
-    min-width: 0;
 }
 
 
 .ini-input span {
-    width: 13px;
-
-    flex-shrink: 0;
-
-    text-align: center;
-
-    font-weight: bold;
-
-    font-size: 13px;
+    font-size: 12px;
+    color: #aaa;
 }
 
 
 .ini-input input {
     width: 100%;
-
     min-width: 0;
 
-    padding:
-        8px
-        3px;
+    height: 34px;
+
+    background: #292929;
+    border: 1px solid #444;
+    border-radius: 5px;
+
+    color: white;
+
+    padding: 5px;
 
     font-size: 14px;
-
-    border: none;
-
-    border-radius: 6px;
-
-    outline: none;
 }
 
 
 .panel > button {
     width: 100%;
+    height: 38px;
 
-    padding: 11px;
+    border: none;
+    border-radius: 6px;
 
-    background: #43a047;
-
+    background: #333;
     color: white;
 
     font-size: 15px;
-
-    font-weight: bold;
-
-    border: none;
-
-    border-radius: 7px;
 
     cursor: pointer;
 }
 
 
-
-/* ==================================================
-   INDICADOR DE RONDA
-================================================== */
-
-.ronda-indicador {
-    background: #f9a825;
-
-    color: #121212;
-
-    font-weight: bold;
-
-    text-align: center;
-
-    padding: 7px;
-
-    border-radius: 7px;
-
-    margin:
-        12px 0;
-
-    font-size: 15px;
+.panel > button:active,
+.combat:active,
+.delete:active,
+.boton-iniciativa:active {
+    transform: scale(0.98);
 }
 
 
+/* =========================================
+   RONDA
+========================================= */
 
-/* ==================================================
-   CARTAS DE PERSONAJES
-================================================== */
+.ronda-indicador {
+    background: none;
+    border: none;
+
+    color: #4da3ff;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    margin: 10px 3px 8px;
+    padding: 0;
+}
+
+
+/* =========================================
+   TARJETAS
+========================================= */
 
 .card {
-    background: #1f1f1f;
-
-    padding: 12px;
-
-    margin:
-        9px 0;
-
-    border-radius: 10px;
-
     position: relative;
 
-    /*
-       Espacio para el botón de borrar.
-    */
-    padding-right: 55px;
+    background: #1d1d1d;
+
+    border: 1px solid #333;
+    border-radius: 9px;
+
+    padding: 10px;
+
+    margin-bottom: 7px;
 }
 
 
@@ -234,75 +182,14 @@ h1 {
 
     font-size: 17px;
 
-    margin-bottom: 8px;
-}
+    margin-bottom: 7px;
 
-
-
-/* ==================================================
-   BOTONES DE INICIATIVA
-================================================== */
-
-.selector-iniciativas {
-    display: flex;
-
-    gap: 5px;
-
-    flex-wrap: wrap;
-
-    margin:
-        5px 0
-        9px;
-}
-
-
-.boton-iniciativa {
-    margin: 0;
-
-    padding:
-        7px 9px;
-
-    background: #333;
-
-    color: #ddd;
-
-    border:
-        1px solid
-        #555;
-
-    border-radius: 6px;
-
-    font-size: 13px;
-
-    min-width: 45px;
-
-    cursor: pointer;
-}
-
-
-.boton-iniciativa strong {
-    margin-right: 3px;
-
-    color: white;
-}
-
-
-.boton-iniciativa.seleccionada {
-    background: #f9a825;
-
-    color: #121212;
-
-    border-color: #f9a825;
-}
-
-
-.boton-iniciativa.seleccionada strong {
-    color: #121212;
+    padding-right: 35px;
 }
 
 
 .iniciativa-unica {
-    color: #999;
+    color: #aaa;
 
     font-size: 13px;
 
@@ -310,10 +197,61 @@ h1 {
 }
 
 
+.iniciativa-unica strong {
+    color: #ddd;
+}
 
-/* ==================================================
+
+/* =========================================
+   VARIAS INICIATIVAS
+========================================= */
+
+.selector-iniciativas {
+    display: flex;
+
+    gap: 5px;
+
+    margin-bottom: 8px;
+}
+
+
+.boton-iniciativa {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 32px;
+
+    background: #292929;
+
+    border: 1px solid #444;
+    border-radius: 5px;
+
+    color: #bbb;
+
+    cursor: pointer;
+
+    padding: 2px 4px;
+}
+
+
+.boton-iniciativa strong {
+    margin-right: 2px;
+}
+
+
+.boton-iniciativa.seleccionada {
+    background: #d69e00;
+
+    border-color: #e6b800;
+
+    color: #111;
+}
+
+
+/* =========================================
    DADO
-================================================== */
+========================================= */
 
 .dado-linea {
     display: flex;
@@ -322,165 +260,114 @@ h1 {
 
     gap: 7px;
 
-    margin-top: 5px;
+    margin-top: 4px;
+}
+
+
+.dado-linea span {
+    font-size: 13px;
+
+    color: #aaa;
 }
 
 
 .dado-linea input {
-    width: 75px;
+    width: 85px;
 
-    padding: 8px;
+    height: 34px;
 
-    margin: 0;
+    background: #292929;
+
+    border: 1px solid #555;
+    border-radius: 5px;
+
+    color: white;
 
     font-size: 16px;
 
-    border: none;
-
-    border-radius: 6px;
-
-    outline: none;
+    padding: 4px 7px;
 }
 
 
-
-/* ==================================================
+/* =========================================
    TOTAL
-================================================== */
+========================================= */
 
 .total-linea {
-    display: flex;
+    margin-top: 7px;
 
-    align-items: center;
-
-    flex-wrap: wrap;
-
-    margin-top: 8px;
-
-    font-size: 18px;
+    font-size: 14px;
 
     font-weight: bold;
-
-    gap: 8px;
 }
 
-
-
-/* ==================================================
-   ADVERTENCIA
-================================================== */
 
 .warning {
-    color: #e53935;
+    color: #ff5252;
 
-    font-size: 13px;
+    font-size: 12px;
 
     font-weight: normal;
+
+    margin-top: 3px;
 }
 
 
-
-/* ==================================================
-   BOTÓN BORRAR
-================================================== */
+/* =========================================
+   BORRAR
+========================================= */
 
 .delete {
     position: absolute;
 
-    right: 9px;
+    right: 8px;
+    top: 8px;
 
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    background: #e53935;
-
-    color: white;
-
-    padding: 9px;
+    width: 30px;
+    height: 30px;
 
     border: none;
 
-    border-radius: 6px;
+    border-radius: 5px;
+
+    background: #292929;
+
+    color: #aaa;
 
     cursor: pointer;
-
-    font-size: 15px;
 }
 
 
-
-/* ==================================================
-   BARRA FIJA INFERIOR
-================================================== */
+/* =========================================
+   BOTONES DE COMBATE
+========================================= */
 
 #combatBtns {
-    position: fixed;
-
-    bottom: 0;
-
-    left: 0;
-
-    right: 0;
-
-    background: #121212;
-
-    padding: 7px;
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 5px;
-
-    border-top:
-        2px solid
-        #333;
-
-    z-index: 100;
+    margin-top: 12px;
 }
 
 
 .botones-principales {
-    width: 100%;
-
     display: flex;
 
-    gap: 5px;
-}
-
-
-.botones-secundarios {
-    width: 100%;
-
-    display: flex;
+    gap: 6px;
 }
 
 
 .botones-principales button {
     flex: 1;
-}
-
-
-.botones-secundarios button {
-    width: 100%;
-}
-
-
-#combatBtns button {
-    margin: 0;
 
     min-width: 0;
 
-    font-size: 12px;
-
-    padding:
-        9px 4px;
+    height: 40px;
 
     border: none;
 
-    border-radius: 7px;
+    border-radius: 6px;
+
+    color: white;
+
+    font-size: 13px;
 
     font-weight: bold;
 
@@ -488,98 +375,117 @@ h1 {
 }
 
 
-
-/* ==================================================
-   COLORES BOTONES
-================================================== */
-
-.combat.ordenar {
-    background: #f9a825;
-
-    color: #121212;
+.ordenar {
+    background: #555;
 }
 
 
-.combat.iniciar {
-    background: #1e88e5;
-
-    color: white;
+.iniciar {
+    background: #2e7d32;
 }
 
 
-.combat.iniciar.activo {
-    background: #e53935 !important;
+.iniciar.activo {
+    background: #b71c1c;
 }
 
 
-.combat.siguiente {
-    background: #6a1b9a;
-
-    color: white;
+.siguiente {
+    background: #1565c0;
 }
 
 
-.combat.nuevo {
-    background: #424242;
+/* =========================================
+   COMBATE NUEVO
+========================================= */
 
-    color: white;
+.apartado-combate-nuevo {
+    margin-top: 18px;
+
+    padding-top: 12px;
+
+    border-top: 1px solid #333;
 }
 
 
+.nuevo {
+    width: 100%;
 
-/* ==================================================
+    height: 40px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #292929;
+
+    color: #ddd;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* =========================================
    HISTÓRICO
-================================================== */
+========================================= */
 
 #historico {
-    margin-top: 110px;
+    margin-top: 18px;
 
-    padding-top: 25px;
+    padding-top: 15px;
 
-    border-top:
-        2px solid
-        #333;
+    border-top: 1px solid #333;
 }
 
 
 #historico h2 {
-    font-size: 20px;
+    font-size: 17px;
 
-    margin:
-        0 0
-        15px;
+    margin: 0 0 10px;
+
+    color: #ccc;
+}
+
+
+.sin-historico {
+    color: #777;
+
+    font-size: 13px;
 }
 
 
 #historico details {
-    background: #1f1f1f;
+    background: #1d1d1d;
 
-    border-radius: 8px;
+    border: 1px solid #333;
 
-    margin-bottom: 8px;
+    border-radius: 7px;
 
-    overflow: hidden;
+    margin-bottom: 6px;
 }
 
 
 #historico summary {
-    padding: 12px;
-
     cursor: pointer;
 
+    padding: 9px;
+
+    color: #ccc;
+
+    font-size: 14px;
+
     font-weight: bold;
-
-    color: #f9a825;
-
-    font-size: 15px;
 }
 
 
 .historico-ronda {
-    padding:
-        5px
-        12px
-        12px;
+    border-top: 1px solid #333;
+
+    padding: 5px 9px 8px;
 }
 
 
@@ -590,87 +496,48 @@ h1 {
 
     align-items: center;
 
-    padding: 8px 0;
+    padding: 5px 0;
 
-    border-bottom:
-        1px solid
-        #333;
+    font-size: 13px;
 
-    gap: 10px;
-}
-
-
-.historico-personaje:last-child {
-    border-bottom: none;
+    color: #aaa;
 }
 
 
 .historico-personaje strong {
-    font-size: 17px;
+    color: #eee;
 }
 
 
-.sin-historico {
-    color: #888;
-
-    font-size: 14px;
-}
-
-
-
-/* ==================================================
-   MÓVIL PEQUEÑO
-================================================== */
+/* =========================================
+   MÓVILES PEQUEÑOS
+========================================= */
 
 @media (max-width: 380px) {
 
     .app {
-        padding-left: 10px;
+        padding: 10px;
 
-        padding-right: 10px;
-
-        padding-bottom: 135px;
+        padding-bottom: 25px;
     }
 
 
     h1 {
-        font-size: 23px;
+        font-size: 21px;
     }
 
 
-    .iniciativa-inputs {
-        gap: 3px;
+    .botones-principales {
+        gap: 4px;
     }
 
 
-    .ini-input span {
-        font-size: 12px;
-
-        width: 12px;
-    }
-
-
-    .ini-input input {
-        font-size: 13px;
-
-        padding:
-            8px 2px;
-    }
-
-
-    #combatBtns button {
+    .botones-principales button {
         font-size: 11px;
-
-        padding:
-            8px 2px;
     }
 
 
-    .boton-iniciativa {
-        font-size: 12px;
-
-        padding:
-            7px 8px;
+    .dado-linea input {
+        width: 75px;
     }
-
 }
