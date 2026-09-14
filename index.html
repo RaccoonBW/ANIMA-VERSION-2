@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Iniciativas Anima :D</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,9 +15,10 @@
 
     <h1>Iniciativas Anima :D</h1>
 
-    <!-- =========================
-         CREAR PERSONAJE
-    ========================== -->
+
+    <!-- =========================================
+         AÑADIR PERSONAJE
+    ========================================== -->
 
     <div class="panel">
 
@@ -83,9 +86,9 @@
     </div>
 
 
-    <!-- =========================
-         RONDA
-    ========================== -->
+    <!-- =========================================
+         RONDA ACTUAL
+    ========================================== -->
 
     <div
         id="rondaActual"
@@ -95,16 +98,16 @@
     </div>
 
 
-    <!-- =========================
-         PERSONAJES
-    ========================== -->
+    <!-- =========================================
+         LISTA DE PERSONAJES
+    ========================================== -->
 
     <div id="lista"></div>
 
 
-    <!-- =========================
-         BOTONES COMBATE
-    ========================== -->
+    <!-- =========================================
+         CONTROLES DE COMBATE
+    ========================================== -->
 
     <div id="combatBtns">
 
@@ -136,28 +139,35 @@
 
         </div>
 
-        <div class="botones-secundarios">
+    </div>
 
-            <button
-                type="button"
-                class="combat nuevo"
-                onclick="nuevoCombate()"
-            >
-                ⚔ Combate nuevo
-            </button>
 
-        </div>
+    <!-- =========================================
+         COMBATE NUEVO
+    ========================================== -->
+
+    <div class="apartado-combate-nuevo">
+
+        <button
+            type="button"
+            class="combat nuevo"
+            onclick="nuevoCombate()"
+        >
+            ⚔ Combate nuevo
+        </button>
 
     </div>
 
 
-    <!-- =========================
+    <!-- =========================================
          HISTÓRICO
-    ========================== -->
+    ========================================== -->
 
     <div id="historico">
 
-        <h2>📜 Histórico de combate</h2>
+        <h2>
+            📜 Histórico de combate
+        </h2>
 
         <div id="historicoLista">
 
